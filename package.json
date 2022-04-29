@@ -34,15 +34,21 @@
     "react-router": "^6.3.0",
     "react-router-dom": "^6.3.0",
     "react-scripts": "^4.0.3",
-    "stop-runaway-react-effects": "^2.0.0"
+    "stop-runaway-react-effects": "^2.0.0",
+    "typescript": "^4.6.4"
   },
   "devDependencies": {
+    "@babel/core": "^7.17.9",
+    "@babel/preset-env": "^7.16.11",
+    "@babel/preset-typescript": "^7.16.7",
     "@testing-library/cypress": "^8.0.2",
     "@testing-library/jest-dom": "^5.16.4",
     "@testing-library/react": "^13.1.1",
     "@testing-library/user-event": "^14.1.1",
+    "@types/jest": "^27.4.1",
     "@types/react": "^18.0.8",
     "@types/react-dom": "^18.0.0",
+    "babel-jest": "^28.0.2",
     "cross-env": "^7.0.3",
     "cypress": "^9.6.0",
     "cypress-hmr-restarter": "^2.0.3",
@@ -52,7 +58,7 @@
     "is-ci": "^3.0.1",
     "is-ci-cli": "^2.2.0",
     "jest": "^26.6.3",
-    "jest-watch-typeahead": "^1.1.0",
+    "jest-watch-typeahead": "^0.6.5",
     "node-match-path": "^0.6.3",
     "npm-run-all": "^4.1.5",
     "prettier": "^2.6.2",
@@ -60,6 +66,7 @@
     "resolve": "^1.22.0",
     "serve": "^13.0.2",
     "start-server-and-test": "^1.14.0",
+    "ts-jest": "^27.1.4",
     "whatwg-fetch": "^3.6.2"
   },
   "scripts": {
