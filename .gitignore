@@ -21,3 +21,8 @@
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
+
+# Allow people to make ignored files anywhere
+*.ignored.*
+ignored/
+.eslintcache
