@@ -1,6 +1,12 @@
+/** @jsx jsx */
+import {jsx} from '@emotion/core'
+
+import 'bootstrap/dist/css/bootstrap-reboot.css'
 import '@reach/dialog/styles.css'
 import * as React from 'react'
-import {Dialog} from '@reach/dialog'
+
+import {Button, Input, FormGroup, Spinner} from './components/lib'
+import {Modal, ModalContents, ModalOpenButton} from './components/modal'
 import {Logo} from './components/logo'
 
 interface FormData extends HTMLFormControlsCollection {
@@ -17,10 +23,10 @@ interface LoginProps {
 		username,
 		password,
 	}: Pick<FormData, 'username' | 'password'>) => void
-	buttonText: string
+	submitButton: React.ReactElement
 }
 
-function LoginForm({onSubmit, buttonText}: LoginProps) {
+function LoginForm({onSubmit, submitButton}: LoginProps) {
 	function handleSubmit(event: React.FormEvent<FormElement>) {
 		event.preventDefault()
 		const {username, password} = event.currentTarget.elements
@@ -32,25 +38,36 @@ function LoginForm({onSubmit, buttonText}: LoginProps) {
 	}
 
 	return (
-		<form onSubmit={handleSubmit}>
-			<div>
+		<form
+			css={{
+				display: 'flex',
+				flexDirection: 'column',
+				alignItems: 'stretch',
+				'> div': {
+					margin: '10px auto',
+					width: '100%',
+					maxWidth: '300px',
+				},
+			}}
+			onSubmit={handleSubmit}
+		>
+			<FormGroup>
 				<label htmlFor="username">Username</label>
-				<input id="username" />
-			</div>
-			<div>
+				<Input id="username" />
+			</FormGroup>
+			<FormGroup>
 				<label htmlFor="password">Password</label>
-				<input id="password" type="password" />
-			</div>
+				<Input id="password" type="password" />
+			</FormGroup>
 			<div>
-				<button type="submit">{buttonText}</button>
+				{React.cloneElement(submitButton, {type: 'submit'})}
+				<Spinner css={{marginLeft: 5}} />
 			</div>
 		</form>
 	)
 }
 
 export default function App() {
-	const [openModal, setOpenModal] = React.useState('none')
-
 	function login(formData: Pick<FormData, 'username' | 'password'>) {
 		console.log('login', formData)
 	}
@@ -60,34 +77,55 @@ export default function App() {
 	}
 
 	return (
-		<div>
-			<Logo width="69" height="69" />
+		<div
+			css={{
+				display: 'flex',
+				flexDirection: 'column',
+				alignItems: 'center',
+				justifyContent: 'center',
+				width: '100%',
+				height: '100vh',
+			}}
+		>
+			<Logo width="80" height="80" />
 			<h1>Bookshelf</h1>
-			<div>
-				<button onClick={() => setOpenModal('login')}>Login</button>
-			</div>
-			<div>
-				<button onClick={() => setOpenModal('register')}>
-					Register
-				</button>
-			</div>
-			<Dialog aria-label="Login form" isOpen={openModal === 'login'}>
-				<div>
-					<button onClick={() => setOpenModal('none')}>Close</button>
-				</div>
-				<h3>Login</h3>
-				<LoginForm onSubmit={login} buttonText="Login" />
-			</Dialog>
-			<Dialog
-				aria-label="Registration form"
-				isOpen={openModal === 'register'}
+			<div
+				css={{
+					display: 'grid',
+					gridTemplateColumns: 'repeat(2, minmax(0, 1fr))',
+					gridGap: '0.75rem',
+				}}
 			>
-				<div>
-					<button onClick={() => setOpenModal('none')}>Close</button>
-				</div>
-				<h3>Register</h3>
-				<LoginForm onSubmit={register} buttonText="Register" />
-			</Dialog>
+				<Modal>
+					<ModalOpenButton>
+						<Button variant="primary">Login</Button>
+					</ModalOpenButton>
+					<ModalContents aria-label="Login form" title="Login">
+						<LoginForm
+							onSubmit={login}
+							submitButton={
+								<Button variant="primary">Login</Button>
+							}
+						/>
+					</ModalContents>
+				</Modal>
+				<Modal>
+					<ModalOpenButton>
+						<Button variant="secondary">Register</Button>
+					</ModalOpenButton>
+					<ModalContents
+						aria-label="Registration form"
+						title="Register"
+					>
+						<LoginForm
+							onSubmit={register}
+							submitButton={
+								<Button variant="secondary">Register</Button>
+							}
+						/>
+					</ModalContents>
+				</Modal>
+			</div>
 		</div>
 	)
 }
