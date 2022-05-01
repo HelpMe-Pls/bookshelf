@@ -11,7 +11,7 @@ root.render(<App />)
 - Use [`@reach/dialog`](https://reacttraining.com/reach-ui/dialog) to render a modal. [Setting its state](https://github.com/HelpMe-Pls/bookshelf/blob/master/src/App.tsx) with `enum` instead of the primitive `boolean` to embrace SoC design (i.e. if you set its state with `boolean`, you *may* get overlapped state from other components using that state).
 - Abstracting away `event.target.value` into a reusable function by destructuring the input fields with `event.currentTarget.elements` and then use `.value` on them. Use TypeScript's `Pick` to [create a new type](https://www.typescriptlang.org/docs/handbook/utility-types.html#picktype-keys) from an extended interface.
 
-## [Style React Components with `emotion`]()
+## [Style React Components with `emotion`](https://github.com/HelpMe-Pls/bookshelf/commit/0f3ac0235383343b749b5fc8b2cb8f8630edc547)
 - Typing [components](https://stackoverflow.com/a/58123882).
 - Typing destructured props ([lines 49 -> 52](https://github.com/HelpMe-Pls/bookshelf/blob/master/src/components/modal.tsx)).
 - Typing context ([lines 14, 15, 24](https://github.com/HelpMe-Pls/bookshelf/blob/master/src/components/modal.tsx)).
