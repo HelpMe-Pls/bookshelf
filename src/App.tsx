@@ -1,12 +1,11 @@
-/** @jsx jsx */
+/** @jsx jsx
+ * @jsxFrag */
 import {jsx} from '@emotion/core'
 
-import 'bootstrap/dist/css/bootstrap-reboot.css'
-import '@reach/dialog/styles.css'
 import * as React from 'react'
-
-import {Button, Input, FormGroup, Spinner} from './components/lib'
-import {Modal, ModalContents, ModalOpenButton} from './components/modal'
+import ReactDOM from 'react-dom'
+import VisuallyHidden from '@reach/visually-hidden'
+import {CircleButton, Input, Button, FormGroup, Dialog} from './components/lib'
 import {Logo} from './components/logo'
 
 interface FormData extends HTMLFormControlsCollection {
@@ -23,10 +22,37 @@ interface LoginProps {
 		username,
 		password,
 	}: Pick<FormData, 'username' | 'password'>) => void
-	submitButton: React.ReactElement
+	buttonText: string
 }
 
-function LoginForm({onSubmit, submitButton}: LoginProps) {
+function Modal({
+	button,
+	label,
+	children,
+}: {
+	button: React.ReactElement
+	label: string
+	children: any
+}) {
+	const [isOpen, setIsOpen] = React.useState(false)
+
+	return (
+		<>
+			{React.cloneElement(button, {onClick: () => setIsOpen(true)})}
+			<Dialog aria-label={label} isOpen={isOpen}>
+				<div css={{display: 'flex', justifyContent: 'flex-end'}}>
+					<CircleButton onClick={() => setIsOpen(false)}>
+						<VisuallyHidden>Close</VisuallyHidden>
+						<span aria-hidden>×</span>
+					</CircleButton>
+				</div>
+				{children}
+			</Dialog>
+		</>
+	)
+}
+
+function LoginForm({onSubmit, buttonText}: LoginProps) {
 	function handleSubmit(event: React.FormEvent<FormElement>) {
 		event.preventDefault()
 		const {username, password} = event.currentTarget.elements
@@ -60,8 +86,7 @@ function LoginForm({onSubmit, submitButton}: LoginProps) {
 				<Input id="password" type="password" />
 			</FormGroup>
 			<div>
-				{React.cloneElement(submitButton, {type: 'submit'})}
-				<Spinner css={{marginLeft: 5}} />
+				<Button type="submit">{buttonText}</Button>
 			</div>
 		</form>
 	)
@@ -96,36 +121,22 @@ export default function App() {
 					gridGap: '0.75rem',
 				}}
 			>
-				<Modal>
-					<ModalOpenButton>
-						<Button variant="primary">Login</Button>
-					</ModalOpenButton>
-					<ModalContents aria-label="Login form" title="Login">
-						<LoginForm
-							onSubmit={login}
-							submitButton={
-								<Button variant="primary">Login</Button>
-							}
-						/>
-					</ModalContents>
+				<Modal label="Login form" button={<Button>Login</Button>}>
+					<h3 css={{textAlign: 'center', fontSize: '2em'}}>Login</h3>
+					<LoginForm onSubmit={login} buttonText="Login" />
 				</Modal>
-				<Modal>
-					<ModalOpenButton>
-						<Button variant="secondary">Register</Button>
-					</ModalOpenButton>
-					<ModalContents
-						aria-label="Registration form"
-						title="Register"
-					>
-						<LoginForm
-							onSubmit={register}
-							submitButton={
-								<Button variant="secondary">Register</Button>
-							}
-						/>
-					</ModalContents>
+				<Modal
+					label="Registration form"
+					button={<Button variant="secondary">Register</Button>}
+				>
+					<h3 css={{textAlign: 'center', fontSize: '2em'}}>
+						Register
+					</h3>
+					<LoginForm onSubmit={register} buttonText="Register" />
 				</Modal>
 			</div>
 		</div>
 	)
 }
+
+ReactDOM.render(<App />, document.getElementById('root'))
