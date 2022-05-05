@@ -3,8 +3,9 @@ import {jsx} from '@emotion/core'
 
 import * as mq from 'styles/media-queries'
 import * as colors from 'styles/colors'
+import {Book} from 'types'
 
-function BookRow({book}: any) {
+function BookRow({book}: {book: Book}) {
 	const {title, author, coverImageUrl} = book
 
 	const id = `book-row-book-${book.id}`

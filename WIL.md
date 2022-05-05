@@ -41,7 +41,8 @@ const Spinner = styled(FaSpinner)({/* styles here */})
 - The default `aria-label` attribute ([at 2:20](https://epicreact.dev/modules/build-an-epic-react-app/add-styles-extra-credit-solution-03)) is intended for use on interactive elements, or elements made to be interactive via other ARIA declarations, when there is no appropriate text visible in the DOM (i.e. for screen readers) that could be referenced as a label.
 
 ## [Make HTTP Requests]()
-- 
+- It is recommended to treat types like functions (i.e. [start with the small things first](https://github.com/HelpMe-Pls/bookshelf/blob/master/src/types.d.ts), then build up bigger things from that, rather than building a composed type right from the start).
+- Use parentheses ([at line 87](https://github.com/HelpMe-Pls/bookshelf/blob/master/src/discover.tsx)) to type guard a "possibly null" object when accessing its properties.
 - Usage of `event.target.elements` ([at 1:20](https://epicreact.dev/modules/build-an-epic-react-app/make-http-requests-solution-01)) and `encodeURIComponent` (at 2:15).
 - Control *when* to run `useEffect`'s callback ([at 3:00](https://epicreact.dev/modules/build-an-epic-react-app/make-http-requests-solution-01)).
 - **When** to [abstract](https://epicreact.dev/modules/build-an-epic-react-app/make-http-requests-solution-02) a piece of functionality into a reusable module.

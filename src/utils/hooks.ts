@@ -1,12 +1,12 @@
 import React from 'react'
 
-type IUseAsyncState<T> = {
+type IUseAsyncState<T, E> = {
     data: T | null
     status: 'idle' | 'pending' | 'resolved' | 'rejected'
-    error: unknown | null
+    error: E | null
 }
 
-type IUseAsyncAction<T> =
+type IUseAsyncAction<T, E> =
     | {
         status: 'pending'
     }
@@ -16,16 +16,16 @@ type IUseAsyncAction<T> =
     }
     | {
         status: 'rejected'
-        error: unknown | null
+        error: E | null
     }
     | {
         data: T
     }
     | {
-        error: unknown | null
+        error: E | null
     }
 
-type IUseAsyncParams<T> = Pick<IUseAsyncState<T>, 'data' | 'status'>
+type IUseAsyncParams<T, E> = Pick<IUseAsyncState<T, E>, 'data' | 'status'>
 
 type IUseAsyncRunFn<T> = (promise: Promise<T>) => Promise<T>
 
@@ -58,13 +58,13 @@ function useSafeDispatch<T>(dispatch: React.Dispatch<T>) {
 // }, [pokemonName, run])
 const defaultInitialState = { status: 'idle', data: null, error: null }
 
-function useAsync<T>(initialState?: IUseAsyncParams<T>) {
+function useAsync<T, E>(initialState?: IUseAsyncParams<T, E>) {
     const initialStateRef = React.useRef({
-        ...(defaultInitialState as IUseAsyncState<T>),
+        ...(defaultInitialState as IUseAsyncState<T, E>),
         ...initialState,
     })
     const [{ status, data, error }, setState] = React.useReducer<
-        React.Reducer<IUseAsyncState<T>, IUseAsyncAction<T>>
+        React.Reducer<IUseAsyncState<T, E>, IUseAsyncAction<T, E>>
     >((s, a) => ({ ...s, ...a }), initialStateRef.current)
 
     const safeSetState = useSafeDispatch(setState)
@@ -95,7 +95,7 @@ function useAsync<T>(initialState?: IUseAsyncParams<T>) {
         data => safeSetState({ data }),
         [safeSetState],
     )
-    const setError = React.useCallback<(error: T | null) => void>(
+    const setError = React.useCallback<(error: E | null) => void>(
         error => safeSetState({ error }),
         [safeSetState],
     )

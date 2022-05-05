@@ -1,10 +1,12 @@
 /** @jsx jsx */
+import {Link as RouterLink} from 'react-router-dom'
 import styled from '@emotion/styled/macro'
 import {jsx, keyframes} from '@emotion/core'
 import {FaSpinner} from 'react-icons/fa'
 import {Dialog as ReachDialog} from '@reach/dialog'
 import * as colors from 'styles/colors'
 import * as mq from 'styles/media-queries'
+import {BooksError} from 'types'
 
 const spin = keyframes({
 	'0%': {transform: 'rotate(0deg)'},
@@ -119,7 +121,17 @@ const errorMessageVariants = {
 	inline: {display: 'inline-block'},
 }
 
-function ErrorMessage({error, variant = 'stacked', ...props}) {
+type ErrorVariants = keyof typeof errorMessageVariants
+
+function ErrorMessage({
+	error,
+	variant = 'stacked',
+	...props
+}: {
+	error: any
+	variant: ErrorVariants
+	props: any
+}) {
 	return (
 		<div
 			role="alert"
@@ -139,7 +151,7 @@ function ErrorMessage({error, variant = 'stacked', ...props}) {
 	)
 }
 
-function FullPageErrorFallback({error}) {
+function FullPageErrorFallback({error}: {error: BooksError}) {
 	return (
 		<div
 			role="alert"

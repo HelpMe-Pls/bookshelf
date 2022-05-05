@@ -9,7 +9,7 @@ import {BookRow} from './components/book-row'
 import {client} from './utils/api-client'
 import * as colors from './styles/colors'
 import {useAsync} from './utils/hooks'
-import {BooksData} from 'types'
+import {BooksData, BooksError} from 'types'
 
 interface FormData extends HTMLFormControlsCollection {
 	search: HTMLInputElement
@@ -20,8 +20,10 @@ interface FormElement extends HTMLFormElement {
 }
 
 function DiscoverBooksScreen() {
-	const {data, error, run, isLoading, isError, isSuccess} =
-		useAsync<BooksData>()
+	const {data, error, run, isLoading, isError, isSuccess} = useAsync<
+		BooksData,
+		BooksError
+	>()
 	const [query, setQuery] = React.useState('')
 	const [queried, setQueried] = React.useState(false)
 
@@ -82,7 +84,7 @@ function DiscoverBooksScreen() {
 			{isError ? (
 				<div css={{color: colors.danger}}>
 					<p>There was an error:</p>
-					<pre>{error?.message}</pre>
+					<pre>{(error as BooksError).message}</pre>
 				</div>
 			) : null}
 
@@ -91,7 +93,7 @@ function DiscoverBooksScreen() {
 					<BookListUL css={{marginTop: 20}}>
 						{data.books.map(book => (
 							<li key={book.id} aria-label={book.title}>
-								<BookRow key={book.id} books={book} />
+								<BookRow key={book.id} book={book} />
 							</li>
 						))}
 					</BookListUL>
