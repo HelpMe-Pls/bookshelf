@@ -40,8 +40,27 @@ const Spinner = styled(FaSpinner)({/* styles here */})
 - Use [`keyframe`](https://www.geeksforgeeks.org/css-keyframes-rule/) to define animations.
 - The default `aria-label` attribute ([at 2:20](https://epicreact.dev/modules/build-an-epic-react-app/add-styles-extra-credit-solution-03)) is intended for use on interactive elements, or elements made to be interactive via other ARIA declarations, when there is no appropriate text visible in the DOM (i.e. for screen readers) that could be referenced as a label.
 
-## [Make HTTP Requests](https://github.com/HelpMe-Pls/bookshelf/commit/c61dcb80ad2ba920d945cbd75d1d89dade80b9f9)
+## [Make HTTP Requests]()
 - It is recommended to treat types like functions (i.e. [start with the small things first](https://github.com/HelpMe-Pls/bookshelf/blob/master/src/types.d.ts), then build up bigger things from that, rather than building a composed type right from the start).
+- Use `[number]` to get an element's type in an array, e.g:
+```ts
+interface BooksData {
+    books: {
+        id: string;
+        title: string;
+        author: string;
+        coverImageUrl: string;
+        pageCount: number;
+        publisher: string;
+        synopsis: string;
+    }[];
+    error?: {
+        message: string;
+        status: number;
+    };
+}
+type BookType = BooksData["books"][number];
+```
 - Use parentheses ([at line 87](https://github.com/HelpMe-Pls/bookshelf/blob/master/src/discover.tsx)) to type guard a "possibly null" object when accessing its properties.
 - Usage of `event.target.elements` ([at 1:20](https://epicreact.dev/modules/build-an-epic-react-app/make-http-requests-solution-01)) and `encodeURIComponent` (at 2:15).
 - Control *when* to run `useEffect`'s callback ([at 3:00](https://epicreact.dev/modules/build-an-epic-react-app/make-http-requests-solution-01)).
