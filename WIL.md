@@ -40,7 +40,7 @@ const Spinner = styled(FaSpinner)({/* styles here */})
 - Use [`keyframe`](https://www.geeksforgeeks.org/css-keyframes-rule/) to define animations.
 - The default `aria-label` attribute ([at 2:20](https://epicreact.dev/modules/build-an-epic-react-app/add-styles-extra-credit-solution-03)) is intended for use on interactive elements, or elements made to be interactive via other ARIA declarations, when there is no appropriate text visible in the DOM (i.e. for screen readers) that could be referenced as a label.
 
-## [Make HTTP Requests]()
+## [Make HTTP Requests](https://github.com/HelpMe-Pls/bookshelf/commit/ba65f455fd5b801a804722c090dc29cd344aca3d)
 - It is recommended to treat types like functions (i.e. [start with the small things first](https://github.com/HelpMe-Pls/bookshelf/blob/master/src/types.d.ts), then build up bigger things from that, rather than building a composed type right from the start).
 - Use `[number]` to get an element's type in an array, e.g:
 ```ts
