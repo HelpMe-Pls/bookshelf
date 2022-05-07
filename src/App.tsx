@@ -1,142 +1,88 @@
-/** @jsx jsx
- * @jsxFrag */
+/** @jsx jsx */
 import {jsx} from '@emotion/core'
 
 import * as React from 'react'
-import ReactDOM from 'react-dom'
-import VisuallyHidden from '@reach/visually-hidden'
-import {CircleButton, Input, Button, FormGroup, Dialog} from './components/lib'
-import {Logo} from './components/logo'
+import * as auth from 'auth-provider'
+import {FullPageSpinner} from './components/lib'
+import * as colors from './styles/colors'
+import {client} from './utils/api-client'
+import {useAsync} from './utils/hooks'
+import {AuthenticatedApp} from './authenticated-app'
+import {UnauthenticatedApp} from './unauthenticated-app'
+import {ErrorResponse, User, UserInput} from 'types'
 
-interface FormData extends HTMLFormControlsCollection {
-	username: HTMLInputElement | string
-	password: HTMLInputElement | string
-}
+async function getUser() {
+	let user = null
 
-interface FormElement extends HTMLFormElement {
-	readonly elements: FormData
-}
-
-interface LoginProps {
-	onSubmit: ({
-		username,
-		password,
-	}: Pick<FormData, 'username' | 'password'>) => void
-	buttonText: string
-}
-
-function Modal({
-	button,
-	label,
-	children,
-}: {
-	button: React.ReactElement
-	label: string
-	children: any
-}) {
-	const [isOpen, setIsOpen] = React.useState(false)
-
-	return (
-		<>
-			{React.cloneElement(button, {onClick: () => setIsOpen(true)})}
-			<Dialog aria-label={label} isOpen={isOpen}>
-				<div css={{display: 'flex', justifyContent: 'flex-end'}}>
-					<CircleButton onClick={() => setIsOpen(false)}>
-						<VisuallyHidden>Close</VisuallyHidden>
-						<span aria-hidden>×</span>
-					</CircleButton>
-				</div>
-				{children}
-			</Dialog>
-		</>
-	)
-}
-
-function LoginForm({onSubmit, buttonText}: LoginProps) {
-	function handleSubmit(event: React.FormEvent<FormElement>) {
-		event.preventDefault()
-		const {username, password} = event.currentTarget.elements
-
-		onSubmit({
-			username: typeof username === 'string' ? username : username.value,
-			password: typeof password === 'string' ? password : password.value,
-		})
+	const token = await auth.getToken()
+	if (token) {
+		const data = await client('me', {token})
+		user = data.user
 	}
 
-	return (
-		<form
-			css={{
-				display: 'flex',
-				flexDirection: 'column',
-				alignItems: 'stretch',
-				'> div': {
-					margin: '10px auto',
-					width: '100%',
-					maxWidth: '300px',
-				},
-			}}
-			onSubmit={handleSubmit}
-		>
-			<FormGroup>
-				<label htmlFor="username">Username</label>
-				<Input id="username" />
-			</FormGroup>
-			<FormGroup>
-				<label htmlFor="password">Password</label>
-				<Input id="password" type="password" />
-			</FormGroup>
-			<div>
-				<Button type="submit">{buttonText}</Button>
-			</div>
-		</form>
-	)
+	return user
 }
 
-export default function App() {
-	function login(formData: Pick<FormData, 'username' | 'password'>) {
-		console.log('login', formData)
+function App() {
+	const {
+		data: user,
+		error,
+		isLoading,
+		isIdle,
+		isSuccess,
+		// isError,
+		run,
+		setData,
+	} = useAsync<User | null, ErrorResponse>()
+
+	React.useEffect(() => {
+		run(getUser())
+	}, [run])
+
+	const login = (form: UserInput) => auth.login(form).then(u => setData(u))
+	const register = (form: UserInput) =>
+		auth.register(form).then(u => setData(u))
+	const logout = () => {
+		auth.logout()
+		setData(null)
 	}
 
-	function register(formData: Pick<FormData, 'username' | 'password'>) {
-		console.log('register', formData)
+	if (isLoading || isIdle) {
+		return <FullPageSpinner />
 	}
 
+	if (isSuccess) {
+		return user ? (
+			<AuthenticatedApp user={user} logout={logout} />
+		) : (
+			<UnauthenticatedApp login={login} register={register} />
+		)
+	}
+
+	// if this `return` here is put inside an `if` statement like:
+	// `if (isError) return(...)` then the `App`'s return value will be
+	// `JSX.Element | undefined` instead of just `JSX.Element`
+	// Which causes TypeScript to catch that `undefined` return exception:
+	/**
+	 * 'App' cannot be used as a JSX component.
+	 * Its return type 'Element | undefined' is not a valid JSX element.
+	 * Type 'undefined' is not assignable to type 'Element | null'.
+	 */
 	return (
 		<div
 			css={{
+				color: colors.danger,
+				height: '100vh',
 				display: 'flex',
 				flexDirection: 'column',
-				alignItems: 'center',
 				justifyContent: 'center',
-				width: '100%',
-				height: '100vh',
+				alignItems: 'center',
 			}}
 		>
-			<Logo width="80" height="80" />
-			<h1>Bookshelf</h1>
-			<div
-				css={{
-					display: 'grid',
-					gridTemplateColumns: 'repeat(2, minmax(0, 1fr))',
-					gridGap: '0.75rem',
-				}}
-			>
-				<Modal label="Login form" button={<Button>Login</Button>}>
-					<h3 css={{textAlign: 'center', fontSize: '2em'}}>Login</h3>
-					<LoginForm onSubmit={login} buttonText="Login" />
-				</Modal>
-				<Modal
-					label="Registration form"
-					button={<Button variant="secondary">Register</Button>}
-				>
-					<h3 css={{textAlign: 'center', fontSize: '2em'}}>
-						Register
-					</h3>
-					<LoginForm onSubmit={register} buttonText="Register" />
-				</Modal>
-			</div>
+			<p>Uh oh... There's a problem. Try refreshing the app.</p>
+			<pre>{(error as ErrorResponse).message}</pre>
 		</div>
 	)
 }
 
-ReactDOM.render(<App />, document.getElementById('root'))
+export {App}

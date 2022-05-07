@@ -1,5 +1,5 @@
 // Do this:
-type Book = {
+export type Book = {
     id: string;
     title: string;
     author: string;
@@ -8,11 +8,11 @@ type Book = {
     publisher: string;
     synopsis: string;
 }
-interface BooksData {
+export interface BooksData {
     books: Book[];
 }
 
-type BooksError = {
+export type ErrorResponse = {
     message: string;
     status: number;
 }
@@ -35,4 +35,15 @@ type BooksError = {
 // }
 // type BookType = BooksData["books"][number];
 
-export { Book, BooksData, BooksError }
+export type User = {
+    id: string;
+    token: string;
+    username: string;
+}
+
+export interface UserInput {
+    username: HTMLInputElement | string
+    password: HTMLInputElement | string
+}
+
+

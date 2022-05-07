@@ -6,7 +6,7 @@ import {FaSpinner} from 'react-icons/fa'
 import {Dialog as ReachDialog} from '@reach/dialog'
 import * as colors from 'styles/colors'
 import * as mq from 'styles/media-queries'
-import {BooksError} from 'types'
+import {ErrorResponse} from 'types'
 
 const spin = keyframes({
 	'0%': {transform: 'rotate(0deg)'},
@@ -129,8 +129,8 @@ function ErrorMessage({
 	...props
 }: {
 	error: any
-	variant: ErrorVariants
-	props: any
+	variant?: ErrorVariants
+	props?: any
 }) {
 	return (
 		<div
@@ -151,7 +151,7 @@ function ErrorMessage({
 	)
 }
 
-function FullPageErrorFallback({error}: {error: BooksError}) {
+function FullPageErrorFallback({error}: {error: ErrorResponse}) {
 	return (
 		<div
 			role="alert"

@@ -58,7 +58,7 @@ function useSafeDispatch<T>(dispatch: React.Dispatch<T>) {
 // }, [pokemonName, run])
 const defaultInitialState = { status: 'idle', data: null, error: null }
 
-function useAsync<T, E>(initialState?: IUseAsyncParams<T, E>) {
+export function useAsync<T, E>(initialState?: IUseAsyncParams<T, E>) {
     const initialStateRef = React.useRef({
         ...(defaultInitialState as IUseAsyncState<T, E>),
         ...initialState,
@@ -121,6 +121,3 @@ function useAsync<T, E>(initialState?: IUseAsyncParams<T, E>) {
     }
 }
 
-export {
-    useAsync
-}
