@@ -68,7 +68,7 @@ type BookType = BooksData["books"][number];
 - A caveat of `window.fetch` is that it won't reject your promise unless the network request is failed ([at 0:43](https://epicreact.dev/modules/build-an-epic-react-app/make-http-requests-extra-credit-solution-01)).
 - Senior stuff/team work: using [their abstractions](https://epicreact.dev/modules/build-an-epic-react-app/make-http-requests-extra-credit-solution-02) to clean up your code.
 
-## [Authentication]()
+## [Authentication](https://github.com/HelpMe-Pls/bookshelf/commit/1347cc0ff81398c2ee5c775e2252fa7edba081dc)
 - The user doesn't want to submit their password every time they need to
 make a request for data. They want to be able to log into the application and
 then the application can continuously authenticate requests for them automatically. A common solution to this problem is to have a special limited use "**token**" which represents the user's *current session*. 
