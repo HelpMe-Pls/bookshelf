@@ -8,14 +8,14 @@
 const root = createRoot(document.getElementById('root'))
 root.render(<App />)
 ```
-- Use [`@reach/dialog`](https://reacttraining.com/reach-ui/dialog) to render a modal. [Setting its state](https://github.com/HelpMe-Pls/bookshelf/blob/master/src/App.tsx) with `enum` instead of the primitive `boolean` to embrace SoC design (i.e. if you set its state with `boolean`, you *may* get overlapped state from other components using that state).
+- Use [`@reach/dialog`](https://reacttraining.com/reach-ui/dialog) to render a modal. [Setting its state](https://github.com/HelpMe-Pls/bookshelf/blob/fbb0819ac1a6f1828b0866bdf3a2f007b76c7248/src/App.tsx) with `enum` instead of the primitive `boolean` to embrace SoC design (i.e. if you set its state with `boolean`, you *may* get overlapped state from other components using that state).
 - Abstracting away `event.target.value` into a reusable function by destructuring the input fields with `event.currentTarget.elements` and then use `.value` on them. Use TypeScript's `Pick` to [create a new type](https://www.typescriptlang.org/docs/handbook/utility-types.html#picktype-keys) from an extended interface.
 
 ## [Style React Components with `emotion`](https://github.com/HelpMe-Pls/bookshelf/commit/0f3ac0235383343b749b5fc8b2cb8f8630edc547)
 - Typing [components](https://stackoverflow.com/a/58123882).
-- Typing destructured props ([lines 49 -> 52](https://github.com/HelpMe-Pls/bookshelf/blob/master/src/components/modal.tsx)).
-- Typing context ([lines 14, 15, 24](https://github.com/HelpMe-Pls/bookshelf/blob/master/src/components/modal.tsx)).
-- A typical use case of `unknown` type: typing an utility function ([lines 8 -> 12](https://github.com/HelpMe-Pls/bookshelf/blob/master/src/components/modal.tsx)).
+- Typing destructured props ([lines 49 -> 51](https://github.com/HelpMe-Pls/bookshelf/blob/0f3ac0235383343b749b5fc8b2cb8f8630edc547/src/components/modal.tsx)).
+- Typing context ([lines 14, 15, 24](https://github.com/HelpMe-Pls/bookshelf/blob/0f3ac0235383343b749b5fc8b2cb8f8630edc547/src/components/modal.tsx)).
+- A typical use case of `unknown` type: typing an utility function ([lines 8 -> 12](https://github.com/HelpMe-Pls/bookshelf/blob/0f3ac0235383343b749b5fc8b2cb8f8630edc547/src/components/modal.tsx)).
 - Create a simple styled component with `emotion` ([at 1:45](https://epicreact.dev/modules/build-an-epic-react-app/add-styles-solution-01)).
 - Use `React.cloneElement` to pass in a component as a prop.
 - Enable ([at 2:30](https://epicreact.dev/modules/build-an-epic-react-app/add-styles-solution-03)) `emotion`'s inline styling for JSX elements (with its `css` prop) by adding:
@@ -41,7 +41,7 @@ const Spinner = styled(FaSpinner)({/* styles here */})
 - The default `aria-label` attribute ([at 2:20](https://epicreact.dev/modules/build-an-epic-react-app/add-styles-extra-credit-solution-03)) is intended for use on interactive elements, or elements made to be interactive via other ARIA declarations, when there is no appropriate text visible in the DOM (i.e. for screen readers) that could be referenced as a label.
 
 ## [Make HTTP Requests](https://github.com/HelpMe-Pls/bookshelf/commit/ba65f455fd5b801a804722c090dc29cd344aca3d)
-- It is recommended to treat types like functions (i.e. [start with the small things first](https://github.com/HelpMe-Pls/bookshelf/blob/master/src/types.d.ts), then build up bigger things from that, rather than building a composed type right from the start).
+- It is recommended to treat types like functions (i.e. [start with the small things first](https://github.com/HelpMe-Pls/bookshelf/blob/ba65f455fd5b801a804722c090dc29cd344aca3d/src/types.d.ts), then build up bigger things from that, rather than building a composed type right from the start).
 - Use `[number]` to get an element's type in an array, e.g:
 ```ts
 interface BooksData {
@@ -61,7 +61,7 @@ interface BooksData {
 }
 type BookType = BooksData["books"][number];
 ```
-- Use parentheses ([at line 87](https://github.com/HelpMe-Pls/bookshelf/blob/master/src/discover.tsx)) to type guard a "possibly null" object when accessing its properties.
+- Use parentheses ([at line 87](https://github.com/HelpMe-Pls/bookshelf/blob/ba65f455fd5b801a804722c090dc29cd344aca3d/src/discover.tsx)) to type guard a "possibly null" object when accessing its properties.
 - Usage of `event.target.elements` ([at 1:20](https://epicreact.dev/modules/build-an-epic-react-app/make-http-requests-solution-01)) and `encodeURIComponent` (at 2:15).
 - Control *when* to run `useEffect`'s callback ([at 3:00](https://epicreact.dev/modules/build-an-epic-react-app/make-http-requests-solution-01)).
 - **When** to [abstract](https://epicreact.dev/modules/build-an-epic-react-app/make-http-requests-solution-02) a piece of functionality into a reusable module.
@@ -93,9 +93,9 @@ const headers = {
 }
 window.fetch('http://example.com/api', {headers})
 ```
-- Make your types *optional* if you're going to set a default for them ([line 6-10](https://github.com/HelpMe-Pls/bookshelf/blob/master/src/utils/api-client.ts) and [line 132](https://github.com/HelpMe-Pls/bookshelf/blob/master/src/components/lib.tsx)).
+- Make your types *optional* if you're going to set a default for them ([line 6-10](https://github.com/HelpMe-Pls/bookshelf/blob/1347cc0ff81398c2ee5c775e2252fa7edba081dc/src/utils/api-client.ts) and [line 132](https://github.com/HelpMe-Pls/bookshelf/blob/1347cc0ff81398c2ee5c775e2252fa7edba081dc/src/components/lib.tsx)).
 - How to merge params ([at 1:30](https://epicreact.dev/modules/build-an-epic-react-app/authentication-extra-credit-solution-01)).
-- It's a good practice to extract `async` logics into an independent function then call it in inside the `useEffect` rather than defining it from within ([line 14-24 and 39](https://github.com/HelpMe-Pls/bookshelf/blob/master/src/App.tsx)).
-- For better maintainability, it's highly recommended to use early `return`s instead of one big `return` with multiple ternary statements in it or all of the `return`'s are conditional ([line 62-85](https://github.com/HelpMe-Pls/bookshelf/blob/master/src/App.tsx)).
+- It's a good practice to extract `async` logics into an independent function then call it in inside the `useEffect` rather than defining it from within ([line 14-24 and 39](https://github.com/HelpMe-Pls/bookshelf/blob/1347cc0ff81398c2ee5c775e2252fa7edba081dc/src/App.tsx)).
+- For better maintainability, it's highly recommended to use early `return`s instead of one big `return` with multiple ternary statements in it or all of the `return`'s are conditional ([line 62-85](https://github.com/HelpMe-Pls/bookshelf/blob/1347cc0ff81398c2ee5c775e2252fa7edba081dc/src/App.tsx)).
 - How to handle [401 response](https://epicreact.dev/modules/build-an-epic-react-app/authentication-extra-credit-solution-03).
 - Build a `Promise` utility function which handles both [POST and GET requests](https://epicreact.dev/modules/build-an-epic-react-app/authentication-extra-credit-solution-04).
