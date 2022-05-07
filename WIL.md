@@ -93,8 +93,9 @@ const headers = {
 }
 window.fetch('http://example.com/api', {headers})
 ```
+- Make your types *optional* if you're going to set a default for them ([line 6-10](https://github.com/HelpMe-Pls/bookshelf/blob/master/src/utils/api-client.ts) and [line 132](https://github.com/HelpMe-Pls/bookshelf/blob/master/src/components/lib.tsx)).
 - How to merge params ([at 1:30](https://epicreact.dev/modules/build-an-epic-react-app/authentication-extra-credit-solution-01)).
 - It's a good practice to extract `async` logics into an independent function then call it in inside the `useEffect` rather than defining it from within ([line 14-24 and 39](https://github.com/HelpMe-Pls/bookshelf/blob/master/src/App.tsx)).
-- For better maintainability, it's highly recommended to [use early `return`s](https://github.com/HelpMe-Pls/bookshelf-forked/blob/exercises/04-authentication/src/app.extra-2.js) instead of one big `return` with multiple ternary statements in it.
+- For better maintainability, it's highly recommended to use early `return`s instead of one big `return` with multiple ternary statements in it or all of the `return`'s are conditional ([line 62-85](https://github.com/HelpMe-Pls/bookshelf/blob/master/src/App.tsx)).
 - How to handle [401 response](https://epicreact.dev/modules/build-an-epic-react-app/authentication-extra-credit-solution-03).
 - Build a `Promise` utility function which handles both [POST and GET requests](https://epicreact.dev/modules/build-an-epic-react-app/authentication-extra-credit-solution-04).
