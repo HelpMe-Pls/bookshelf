@@ -100,8 +100,8 @@ window.fetch('http://example.com/api', {headers})
 - How to handle [401 response](https://epicreact.dev/modules/build-an-epic-react-app/authentication-extra-credit-solution-03).
 - Build a `Promise` utility function which handles both [POST and GET requests](https://epicreact.dev/modules/build-an-epic-react-app/authentication-extra-credit-solution-04).
 
-## [Routing](https://github.com/HelpMe-Pls/bookshelf/commit/659c4b89bc6b7ebec02ed2c68ed2f0362726f0c2)
+## [Routing](https://github.com/HelpMe-Pls/bookshelf/commit/ef1ee6c79ac39d64710e4dfec7bf7b42e05b506a)
 - Embracing Single-page App: you can change the URL when the user performs an action (like clicking a link or submitting a form). This all happens client-side and does **not** reload the browser by using `react-router`. Key takeaways: differences between `BrowserRouter`, `Routes`, `Route` and `Link` ([at 6:50](https://epicreact.dev/modules/build-an-epic-react-app/routing-solution)). 
 - How to handle [URL redirects](https://epicreact.dev/modules/build-an-epic-react-app/routing-extra-credit-solution-01). Prioritize [server-side redirects](https://kentcdodds.com/blog/stop-using-client-side-route-redirects) over client-side.
 - `useMatch` to [highlight](https://epicreact.dev/modules/build-an-epic-react-app/routing-extra-credit-solution-02) the active nav item.
-- Use template literal to perform `string` interpolation in case of building a forced `string` type expression ([at line 100](https://github.com/HelpMe-Pls/bookshelf/blob/659c4b89bc6b7ebec02ed2c68ed2f0362726f0c2/src/discover.tsx)).  
+- Use template literal to perform `string` interpolation in case of building a forced `string` type expression ([at line 100](https://github.com/HelpMe-Pls/bookshelf/blob/ef1ee6c79ac39d64710e4dfec7bf7b42e05b506a/src/discover.tsx)).  
