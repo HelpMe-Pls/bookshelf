@@ -96,7 +96,10 @@ function DiscoverBooksScreen({user}: {user: User}) {
 					<BookListUL css={{marginTop: 20}}>
 						{data.books.map(book => (
 							// `aria-label` only takes expression of type
-							// `string | undefined`, so that's why we're using the template literal
+							// `string | undefined`, so that's why we're using the template literal.
+							// Another way around to make it more readable is to type cast it to string like:
+							// book.title.toString()	or
+							// String(book.title)
 							<li key={book.id} aria-label={`${book.title}`}>
 								<BookRow key={book.id} book={book} />
 							</li>
