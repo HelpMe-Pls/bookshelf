@@ -1,15 +1,16 @@
 // Do this:
-export type Book = {
+export type Book = { book: BookData }
+export type BookData = {
     id: string;
-    title: string;
+    title: string | number;
     author: string;
     coverImageUrl: string;
     pageCount: number;
     publisher: string;
     synopsis: string;
 }
-export interface BooksData {
-    books: Book[];
+type BooksData = {
+    books: BookData[];
 }
 
 export type ErrorResponse = {
@@ -33,7 +34,7 @@ export type ErrorResponse = {
 //         status: number;
 //     };
 // }
-// type BookType = BooksData["books"][number];
+// type BookData = BooksData["books"][number];
 
 export type User = {
     id: string;

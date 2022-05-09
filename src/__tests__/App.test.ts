@@ -38,6 +38,7 @@ const waitForLoadingToFinish = () =>
 	)
 
 test('can login and use the book search', async () => {
+	// setup
 	const root = document.createElement('div')
 	root.id = 'root'
 	document.body.append(root)
@@ -47,9 +48,11 @@ test('can login and use the book search', async () => {
 		rootRef = require('..').rootRef
 	})
 
+	await waitForLoadingToFinish()
+
 	const user = buildUser()
 
-	await userEvent.click(await screen.findByRole('button', { name: /register/i }))
+	await userEvent.click(screen.getByRole('button', { name: /register/i }))
 
 	const modal = within(screen.getByRole('dialog'))
 	await userEvent.type(modal.getByLabelText(/username/i), user.username)
@@ -59,7 +62,27 @@ test('can login and use the book search', async () => {
 
 	await waitForLoadingToFinish()
 
+	await userEvent.click(screen.getAllByRole('link', { name: /discover/i })[0])
+
+	const searchInput = screen.getByPlaceholderText(/search/i)
+	await userEvent.type(searchInput, 'voice of war')
+
+	await userEvent.click(screen.getByLabelText(/search/i))
+	await waitForLoadingToFinish()
+
+	await userEvent.click(screen.getByText(/voice of war/i))
+
+	expect(window.location.href).toMatchInlineSnapshot(
+		`"http://localhost/book/B084F96GFZ"`,
+	)
+
+	expect(
+		await screen.findByText(/to the west, a sheltered girl/i),
+	).toBeInTheDocument()
+
 	await userEvent.click(screen.getByRole('button', { name: /logout/i }))
+
+	expect(searchInput).not.toBeInTheDocument()
 
 	// cleanup
 	act(() => rootRef.current.unmount())

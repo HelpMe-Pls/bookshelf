@@ -9,17 +9,16 @@ import {BookRow} from './components/book-row'
 import {client} from './utils/api-client'
 import * as colors from './styles/colors'
 import {useAsync} from './utils/hooks'
-import {BooksData, ErrorResponse} from 'types'
+import {BooksData, ErrorResponse, User} from 'types'
 
 interface FormData extends HTMLFormControlsCollection {
 	search: HTMLInputElement
 }
-
 interface FormElement extends HTMLFormElement {
 	readonly elements: FormData
 }
 
-function DiscoverBooksScreen() {
+function DiscoverBooksScreen({user}: {user: User}) {
 	const {data, error, run, isLoading, isError, isSuccess} = useAsync<
 		BooksData,
 		ErrorResponse
@@ -31,8 +30,12 @@ function DiscoverBooksScreen() {
 		if (!queried) {
 			return
 		}
-		run(client(`books?query=${encodeURIComponent(query)}`))
-	}, [query, queried, run])
+		run(
+			client(`books?query=${encodeURIComponent(query)}`, {
+				token: user.token,
+			}),
+		)
+	}, [query, queried, run, user.token])
 
 	function handleSearchSubmit(event: React.FormEvent<FormElement>) {
 		event.preventDefault()
@@ -92,7 +95,9 @@ function DiscoverBooksScreen() {
 				data?.books?.length ? (
 					<BookListUL css={{marginTop: 20}}>
 						{data.books.map(book => (
-							<li key={book.id} aria-label={book.title}>
+							// `aria-label` only takes expression of type
+							// `string | undefined`, so that's why we're using the template literal
+							<li key={book.id} aria-label={`${book.title}`}>
 								<BookRow key={book.id} book={book} />
 							</li>
 						))}

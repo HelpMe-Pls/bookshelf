@@ -41,7 +41,7 @@ const Spinner = styled(FaSpinner)({/* styles here */})
 - The default `aria-label` attribute ([at 2:20](https://epicreact.dev/modules/build-an-epic-react-app/add-styles-extra-credit-solution-03)) is intended for use on interactive elements, or elements made to be interactive via other ARIA declarations, when there is no appropriate text visible in the DOM (i.e. for screen readers) that could be referenced as a label.
 
 ## [Make HTTP Requests](https://github.com/HelpMe-Pls/bookshelf/commit/ba65f455fd5b801a804722c090dc29cd344aca3d)
-- It is recommended to treat types like functions (i.e. [start with the small things first](https://github.com/HelpMe-Pls/bookshelf/blob/ba65f455fd5b801a804722c090dc29cd344aca3d/src/types.d.ts), then build up bigger things from that, rather than building a composed type right from the start).
+- It is highly recommended to treat types like functions (i.e. [start with the *small* things first](https://github.com/HelpMe-Pls/bookshelf/blob/ba65f455fd5b801a804722c090dc29cd344aca3d/src/types.d.ts), then build up bigger things from those, rather than building a composed type right from the start).
 - Use `[number]` to get an element's type in an array, e.g:
 ```ts
 interface BooksData {
@@ -59,7 +59,7 @@ interface BooksData {
         status: number;
     };
 }
-type BookType = BooksData["books"][number];
+type BookData = BooksData["books"][number];
 ```
 - Use parentheses ([at line 87](https://github.com/HelpMe-Pls/bookshelf/blob/ba65f455fd5b801a804722c090dc29cd344aca3d/src/discover.tsx)) to type guard a "possibly null" object when accessing its properties.
 - Usage of `event.target.elements` ([at 1:20](https://epicreact.dev/modules/build-an-epic-react-app/make-http-requests-solution-01)) and `encodeURIComponent` (at 2:15).
@@ -99,3 +99,9 @@ window.fetch('http://example.com/api', {headers})
 - For better maintainability, it's highly recommended to use early `return`s instead of one big `return` with multiple ternary statements in it or all of the `return`'s are conditional ([line 62-85](https://github.com/HelpMe-Pls/bookshelf/blob/1347cc0ff81398c2ee5c775e2252fa7edba081dc/src/App.tsx)).
 - How to handle [401 response](https://epicreact.dev/modules/build-an-epic-react-app/authentication-extra-credit-solution-03).
 - Build a `Promise` utility function which handles both [POST and GET requests](https://epicreact.dev/modules/build-an-epic-react-app/authentication-extra-credit-solution-04).
+
+## [Routing]()
+- Embracing Single-page App: you can change the URL when the user performs an action (like clicking a link or submitting a form). This all happens client-side and does **not** reload the browser by using `react-router`. Key takeaways: differences between `BrowserRouter`, `Routes`, `Route` and `Link` ([at 6:50](https://epicreact.dev/modules/build-an-epic-react-app/routing-solution)). 
+- How to handle [URL redirects](https://epicreact.dev/modules/build-an-epic-react-app/routing-extra-credit-solution-01). Prioritize [server-side redirects](https://kentcdodds.com/blog/stop-using-client-side-route-redirects) over client-side.
+- `useMatch` to [highlight](https://epicreact.dev/modules/build-an-epic-react-app/routing-extra-credit-solution-02) the active nav item.
+- Use template literal to perform `string` interpolation in case of building a forced `string` type expression ([at line 100]()).  
