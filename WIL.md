@@ -105,3 +105,22 @@ window.fetch('http://example.com/api', {headers})
 - How to handle [URL redirects](https://epicreact.dev/modules/build-an-epic-react-app/routing-extra-credit-solution-01). Prioritize [server-side redirects](https://kentcdodds.com/blog/stop-using-client-side-route-redirects) over client-side.
 - `useMatch` to [highlight](https://epicreact.dev/modules/build-an-epic-react-app/routing-extra-credit-solution-02) the active nav item.
 - Use template literal to perform `string` interpolation in case of building a forced `string` type expression ([at line 100](https://github.com/HelpMe-Pls/bookshelf/blob/ef1ee6c79ac39d64710e4dfec7bf7b42e05b506a/src/discover.tsx)).  
+
+## [Cache management with `react-query`]()
+- An app's state can be separated into two types:
+1. UI state: Modal is open, item is highlighted, etc.
+2. Server cache: User data, tweets, contacts, etc.
+We can drastically simplify our UI state management if we split out the server
+cache into something separate.
+- Setting a default value to a variable if it's `undefined` ([at 1:00](https://epicreact.dev/modules/build-an-epic-react-app/cache-management-solution-08)).
+- Use nullish coalescing operator `??` with run-time array [traversing methods](status-button).
+- Perform CRUD operations with `react-query`.
+- If your `queryFn` depends on a variable, include it in your `queryKey` array. How to [optimize](https://tkdodo.eu/blog/effective-react-query-keys) query keys. 
+- Invalidate query with `onSettled` option from the `useMutation` hook ([at 2:35](https://epicreact.dev/modules/build-an-epic-react-app/cache-management-solution-02)).
+- Clear the cache (e.g. when the user logs out or they make a `401` request) by using `queryCache.clear()`.
+- Refactor hooks from `react-query` into custom hooks to abstract implementation details and avoid the risk of syntax errors from duplicating the same piece of code over and over again ([at 2:30](https://epicreact.dev/modules/build-an-epic-react-app/cache-management-extra-credit-solution-01-03)).
+- Set the `useErrorBoundary` option from the `useMutation` hook to `true` to get mutation errors [to be thrown in the render phase](https://youtu.be/umJqHUcOaUo?t=1178) and propagate to the nearest error boundary. 
+- Prefetch with [`queryClient.prefetchQuery`](https://react-query.tanstack.com/reference/QueryClient#queryclientprefetchquery) and [`queryClient.removeQueries`](https://react-query.tanstack.com/reference/QueryClient#queryclientremovequeries).
+- Persist cache with `useQuery`'s [`onSuccess` option](https://youtu.be/umJqHUcOaUo?t=1480) using `queryClient.setQueryData`.
+- Perform optimistic updates (i.e. assuming the request is going to succeed and make
+the UI appear as if it had) with `useMutation`'s `onMutate` option ([at 1:20](https://epicreact.dev/modules/build-an-epic-react-app/cache-management-extra-credit-solution-07)). You can rollback optimistic updates in case of a mutation failure by using the `onError` and `onSettled` options ([at 3:20](https://epicreact.dev/modules/build-an-epic-react-app/cache-management-extra-credit-solution-07)).
