@@ -1,15 +1,16 @@
 // Do this:
 export type BookData = {
-    id: string;
-    title: string | number;
-    author: string;
-    coverImageUrl: string;
-    pageCount?: number;
-    publisher: string;
-    synopsis: string;
+    id: string
+    title: string | number
+    author: string
+    coverImageUrl: string
+    pageCount?: number
+    publisher: string
+    synopsis: string
+    loadingBook?: boolean
 }
 export type BooksData = {
-    books: BookData[];
+    books: BookData[]
 }
 // Instead of:
 // interface BooksData {
@@ -31,15 +32,31 @@ export type BooksData = {
 
 export type BookProps = {
     bookId: string,
-    ownerId?: string,
-    rating?: number,
-    notes?: string,
-    startDate?: Date | number,
-    finishDate?: Date | number | null,
+    ownerId?: string
+    rating?: number
+    notes?: string
+    startDate?: Date | number
+    finishDate?: Date | number | null
 }
+
 export type BooksList = BookProps[] | undefined
 
 export type Book = { book: BookData }
+export type CommonBook = {
+    bookId: string
+    title: string | number
+    author: string
+    coverImageUrl: string
+    pageCount?: number
+    publisher: string
+    synopsis: string
+    loadingBook?: boolean
+    ownerId?: string
+    rating?: number
+    notes?: string
+    startDate?: Date | number
+    finishDate?: Date | number | null
+}
 
 export type ErrorResponse = {
     message: string;

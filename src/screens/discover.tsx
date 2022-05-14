@@ -8,7 +8,7 @@ import {Input, BookListUL, Spinner} from '../components/lib'
 import {BookRow} from '../components/book-row'
 import * as colors from '../styles/colors'
 import {useBookSearch, useRefetchBookSearchQuery} from 'utils/books'
-import {ErrorResponse, User} from 'types'
+import {User} from 'types'
 
 interface FormData extends HTMLFormControlsCollection {
 	search: HTMLInputElement
@@ -73,7 +73,7 @@ function DiscoverBooksScreen({user}: {user: User}) {
 			{isError ? (
 				<div css={{color: colors.danger}}>
 					<p>There was an error:</p>
-					<pre>{(error as ErrorResponse).message}</pre>
+					<pre>{(error as Error).message}</pre>
 				</div>
 			) : null}
 			<div>
@@ -109,7 +109,7 @@ function DiscoverBooksScreen({user}: {user: User}) {
 				books.length ? (
 					<BookListUL css={{marginTop: 20}}>
 						{books.map(book => (
-							<li key={book.id} aria-label={String(book.title)}>
+							<li key={book.id} aria-label={`${book.title}`}>
 								<BookRow
 									user={user}
 									key={book.id}

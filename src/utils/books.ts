@@ -2,9 +2,10 @@ import React from 'react'
 import { QueryClient, useQuery, useQueryClient } from 'react-query'
 import { client } from './api-client'
 import bookPlaceholderSvg from 'assets/book-placeholder.svg'
-import { BookProps, BookData, User } from 'types'
+import { Book, BookProps, BookData, BooksData, User } from 'types'
 
 const loadingBook = {
+    id: '',
     title: 'Loading...',
     author: 'loading...',
     coverImageUrl: bookPlaceholderSvg,
@@ -14,8 +15,8 @@ const loadingBook = {
 }
 
 const loadingBooks = Array.from({ length: 10 }, (_v, index) => ({
-    id: `loading-book-${index}`,
     ...loadingBook,
+    id: `loading-book-${index}`,
 }))
 
 const getBookSearchConfig = (queryClient: QueryClient, query: string, user: User) => ({
@@ -23,7 +24,7 @@ const getBookSearchConfig = (queryClient: QueryClient, query: string, user: User
     queryFn: () =>
         client(`books?query=${encodeURIComponent(query)}`, {
             token: user.token,
-        }).then(data => data.books),
+        }).then((data: BooksData) => data.books),
 
     onSuccess(books: BookData[]) {
         for (const book of books) {
@@ -42,7 +43,7 @@ export function useBook(bookId: Pick<BookProps, "bookId">["bookId"] | undefined,
     const { data } = useQuery({
         queryKey: ['book', { bookId }],
         queryFn: () =>
-            client(`books/${bookId}`, { token: user.token }).then(data => data.book),
+            client(`books/${bookId}`, { token: user.token }).then((res: Book) => res.book),
     })
     return data ?? loadingBook
 }

@@ -15,14 +15,14 @@ import * as colors from 'styles/colors'
 import {Spinner, Textarea, ErrorMessage} from 'components/lib'
 import {Rating} from 'components/rating'
 import {StatusButtons} from 'components/status-buttons'
-import {BookProps, User} from 'types'
+import {BookData, BookProps, User} from 'types'
 
 function BookScreen({user}: {user: User}) {
 	const {bookId} = useParams()
 	const book = useBook(bookId, user)
 	const listItem = useListItem(user, bookId!)
 
-	const {title, author, coverImageUrl, publisher, synopsis} = book
+	const {title, author, coverImageUrl, publisher, synopsis} = book as BookData
 
 	return (
 		<div>
@@ -65,7 +65,7 @@ function BookScreen({user}: {user: User}) {
 								minHeight: 100,
 							}}
 						>
-							{book.loadingBook ? null : (
+							{(book as BookData).loadingBook ? null : (
 								<StatusButtons user={user} book={book} />
 							)}
 						</div>
@@ -82,7 +82,7 @@ function BookScreen({user}: {user: User}) {
 					<p>{synopsis}</p>
 				</div>
 			</div>
-			{!book.loadingBook && listItem ? (
+			{!(book as BookData).loadingBook && listItem ? (
 				<NotesTextarea user={user} listItem={listItem} />
 			) : null}
 		</div>

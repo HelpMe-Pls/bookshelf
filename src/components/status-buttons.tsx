@@ -70,8 +70,8 @@ function TooltipButton({
 	)
 }
 
-function StatusButtons({user, book}: {user: User; book: BookProps}) {
-	const listItem = useListItem(user, book.bookId)
+function StatusButtons({user, book}: {user: User; book: BookProps | BookData}) {
+	const listItem = useListItem(user, (book as BookProps).bookId)
 
 	const {mutateAsync: update} = useUpdateListItem(user)
 	const {mutateAsync: remove} = useRemoveListItem(user)
@@ -114,7 +114,7 @@ function StatusButtons({user, book}: {user: User; book: BookProps}) {
 				<TooltipButton
 					label="Add to list"
 					highlight={colors.indigo}
-					onClick={() => create({bookId: book.bookId})}
+					onClick={() => create({bookId: (book as BookProps).bookId})}
 					icon={<FaPlusCircle />}
 				/>
 			)}
