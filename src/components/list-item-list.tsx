@@ -1,16 +1,21 @@
-//@ts-nocheck
 /** @jsx jsx */
 import {jsx} from '@emotion/core'
 
 import {useListItems} from 'utils/list-items'
 import {BookListUL} from './lib'
 import {BookRow} from './book-row'
+import {BookProps, User} from 'types'
 
 function ListItemList({
 	user,
 	filterListItems,
 	noListItems,
 	noFilteredListItems,
+}: {
+	user: User
+	filterListItems: (li: BookProps) => boolean
+	noListItems: React.ReactNode
+	noFilteredListItems: React.ReactNode
 }) {
 	const listItems = useListItems(user)
 
@@ -32,8 +37,8 @@ function ListItemList({
 	return (
 		<BookListUL>
 			{filteredListItems.map(listItem => (
-				<li key={listItem.id}>
-					<BookRow user={user} book={listItem.book} />
+				<li key={listItem.bookId}>
+					<BookRow user={user} book={listItem} />
 				</li>
 			))}
 		</BookListUL>

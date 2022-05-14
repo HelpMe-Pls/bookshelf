@@ -3,15 +3,32 @@ import {jsx} from '@emotion/core'
 
 import * as React from 'react'
 import {Routes, Route, Link, useMatch} from 'react-router-dom'
-
-import {Button} from './components/lib'
+import {ErrorBoundary} from 'react-error-boundary'
+import {Button, ErrorMessage, FullPageErrorFallback} from './components/lib'
 import * as mq from './styles/media-queries'
 import * as colors from './styles/colors'
+import {ReadingListScreen} from './screens/reading-list'
+import {FinishedScreen} from './screens/finished'
 import {DiscoverBooksScreen} from './screens/discover'
 import {BookScreen} from './screens/book'
 import {NotFoundScreen} from './screens/not-found'
 
 import {User} from 'types'
+
+function ErrorFallback({error}: {error: Error}) {
+	return (
+		<ErrorMessage
+			error={error}
+			css={{
+				height: '100%',
+				display: 'flex',
+				flexDirection: 'column',
+				justifyContent: 'center',
+				alignItems: 'center',
+			}}
+		/>
+	)
+}
 
 function AuthenticatedApp({
 	user,
@@ -21,7 +38,7 @@ function AuthenticatedApp({
 	logout: React.MouseEventHandler<HTMLButtonElement>
 }) {
 	return (
-		<React.Fragment>
+		<ErrorBoundary FallbackComponent={FullPageErrorFallback}>
 			<div
 				css={{
 					display: 'flex',
@@ -60,10 +77,12 @@ function AuthenticatedApp({
 					<Nav />
 				</div>
 				<main css={{width: '100%'}}>
-					<AppRoutes user={user} />
+					<ErrorBoundary FallbackComponent={ErrorFallback}>
+						<AppRoutes user={user} />
+					</ErrorBoundary>
 				</main>
 			</div>
-		</React.Fragment>
+		</ErrorBoundary>
 	)
 }
 
@@ -126,6 +145,12 @@ function Nav() {
 				}}
 			>
 				<li>
+					<NavLink to="/list">Reading List</NavLink>
+				</li>
+				<li>
+					<NavLink to="/finished">Finished Books</NavLink>
+				</li>
+				<li>
 					<NavLink to="/discover">Discover</NavLink>
 				</li>
 			</ul>
@@ -136,6 +161,8 @@ function Nav() {
 function AppRoutes({user}: {user: User}) {
 	return (
 		<Routes>
+			<Route path="/list" element={<ReadingListScreen user={user} />} />
+			<Route path="/finished" element={<FinishedScreen user={user} />} />
 			<Route
 				path="/discover"
 				element={<DiscoverBooksScreen user={user} />}

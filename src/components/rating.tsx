@@ -1,14 +1,14 @@
-//@ts-nocheck
 /** @jsx jsx */
-import {jsx} from '@emotion/core'
+import {jsx, ObjectInterpolation} from '@emotion/core'
 
 import * as React from 'react'
 import {useUpdateListItem} from 'utils/list-items'
 import {FaStar} from 'react-icons/fa'
 import * as colors from 'styles/colors'
 import {ErrorMessage} from 'components/lib'
+import {BookProps, User} from 'types'
 
-const visuallyHiddenCSS = {
+const visuallyHiddenCSS: ObjectInterpolation<undefined> = {
 	border: '0',
 	clip: 'rect(0 0 0 0)',
 	height: '1px',
@@ -19,12 +19,12 @@ const visuallyHiddenCSS = {
 	width: '1px',
 }
 
-function Rating({listItem, user}) {
+function Rating({listItem, user}: {listItem: BookProps; user: User}) {
 	const [isTabbing, setIsTabbing] = React.useState(false)
-	const [update, {error, isError}] = useUpdateListItem(user)
+	const {mutate: update, error, isError} = useUpdateListItem(user)
 
 	React.useEffect(() => {
-		function handleKeyDown(event) {
+		function handleKeyDown(event: KeyboardEvent) {
 			if (event.key === 'Tab') {
 				setIsTabbing(true)
 			}
@@ -33,10 +33,10 @@ function Rating({listItem, user}) {
 		return () => document.removeEventListener('keydown', handleKeyDown)
 	}, [])
 
-	const rootClassName = `list-item-${listItem.id}`
+	const rootClassName = `list-item-${listItem.bookId}`
 
 	const stars = Array.from({length: 5}).map((x, i) => {
-		const ratingId = `rating-${listItem.id}-${i}`
+		const ratingId = `rating-${listItem.bookId}-${i}`
 		const ratingValue = i + 1
 		return (
 			<React.Fragment key={i}>
@@ -47,7 +47,7 @@ function Rating({listItem, user}) {
 					value={ratingValue}
 					checked={ratingValue === listItem.rating}
 					onChange={() => {
-						update({id: listItem.id, rating: ratingValue})
+						update({bookId: listItem.bookId, rating: ratingValue})
 					}}
 					css={[
 						visuallyHiddenCSS,
@@ -83,7 +83,7 @@ function Rating({listItem, user}) {
 					htmlFor={ratingId}
 					css={{
 						cursor: 'pointer',
-						color: listItem.rating < 0 ? colors.gray20 : 'orange',
+						color: listItem.rating! < 0 ? colors.gray20 : 'orange',
 						margin: 0,
 					}}
 				>

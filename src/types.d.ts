@@ -1,23 +1,16 @@
 // Do this:
-export type Book = { book: BookData }
 export type BookData = {
     id: string;
     title: string | number;
     author: string;
     coverImageUrl: string;
-    pageCount: number;
+    pageCount?: number;
     publisher: string;
     synopsis: string;
 }
-type BooksData = {
+export type BooksData = {
     books: BookData[];
 }
-
-export type ErrorResponse = {
-    message: string;
-    status: number;
-}
-
 // Instead of:
 // interface BooksData {
 //     books: {
@@ -36,6 +29,23 @@ export type ErrorResponse = {
 // }
 // type BookData = BooksData["books"][number];
 
+export type BookProps = {
+    bookId: string,
+    ownerId?: string,
+    rating?: number,
+    notes?: string,
+    startDate?: Date | number,
+    finishDate?: Date | number | null,
+}
+export type BooksList = BookProps[] | undefined
+
+export type Book = { book: BookData }
+
+export type ErrorResponse = {
+    message: string;
+    status: number;
+}
+
 export type User = {
     id: string;
     token: string;
@@ -47,4 +57,11 @@ export interface UserInput {
     password: HTMLInputElement | string
 }
 
-
+export type ClientConfigs = {
+    method: "GET" | "POST" | "PUT" | "DELETE" | "PATCH"
+    body: string | undefined
+    headers: {
+        Authorization: string | undefined;
+        'Content-Type': string | undefined;
+    }
+}

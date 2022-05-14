@@ -1,4 +1,5 @@
 import * as auth from 'auth-provider'
+import { ClientConfigs } from '../types'
 const apiURL = process.env.REACT_APP_API_URL
 
 async function client(
@@ -6,10 +7,10 @@ async function client(
     { data, token, headers: customHeaders, ...customConfigs }: {
         data?: unknown;
         token?: string;
-        headers?: Record<string, string>
-    } = {},
+        headers?: Record<string, string>,
+    } & Partial<ClientConfigs> = {},
 ) {
-    const config = {
+    const config: ClientConfigs = {
         method: data ? 'POST' : 'GET',
         body: data ? JSON.stringify(data) : undefined,
         headers: {

@@ -3,7 +3,7 @@ import {jsx} from '@emotion/core'
 
 import * as React from 'react'
 import {BrowserRouter as Router} from 'react-router-dom'
-
+import {useQueryClient} from 'react-query'
 import * as auth from 'auth-provider'
 import {FullPageSpinner} from './components/lib'
 import * as colors from './styles/colors'
@@ -44,8 +44,10 @@ function App() {
 	const login = (form: UserInput) => auth.login(form).then(u => setData(u))
 	const register = (form: UserInput) =>
 		auth.register(form).then(u => setData(u))
+	const queryClient = useQueryClient()
 	const logout = () => {
 		auth.logout()
+		queryClient.clear()
 		setData(null)
 	}
 

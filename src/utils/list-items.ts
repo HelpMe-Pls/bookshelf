@@ -1,91 +1,85 @@
-//@ts-nocheck
-import { useQuery, useMutation, queryCache } from 'react-query'
-import { setQueryDataForBook } from './books'
+import { useQuery, useMutation, useQueryClient } from 'react-query'
+import { setQueryDataForBookInList } from './books'
 import { client } from './api-client'
+import { BookProps, BooksList, User } from 'types'
 
-function useListItems(user) {
-    const { data: listItems } = useQuery({
+export function useListItems(user: User) {
+    const queryClient = useQueryClient()
+    const { data: listItems } = useQuery<BooksList>({
         queryKey: 'list-items',
         queryFn: () =>
             client(`list-items`, { token: user.token }).then(data => data.listItems),
-        config: {
-            onSuccess(listItems) {
-                for (const listItem of listItems) {
-                    setQueryDataForBook(listItem.book)
-                }
-            },
+        onSuccess(items) {
+            for (const listItem of items!) {
+                setQueryDataForBookInList(queryClient, listItem)
+            }
         },
+
     })
     return listItems ?? []
 }
 
-function useListItem(user, bookId) {
+
+export function useListItem(user: User, bookId: string) {
     const listItems = useListItems(user)
-    return listItems.find(li => li.bookId === bookId) ?? null
+    return listItems.find((li: BookProps) => li.bookId === bookId) ?? null
 }
 
-const defaultMutationOptions = {
-    onError: (err, variables, recover) =>
-        typeof recover === 'function' ? recover() : null,
-    onSettled: () => queryCache.invalidateQueries('list-items'),
-}
 
-function useUpdateListItem(user, ...options) {
+export function useUpdateListItem(user: User, ...options: any) {
+    const queryClient = useQueryClient()
     return useMutation(
-        updates =>
-            client(`list-items/${updates.id}`, {
+        (updates: Pick<BookProps, "bookId" | "finishDate" | "rating" | "notes">) =>
+            client(`list-items/${updates.bookId}`, {
                 method: 'PUT',
                 data: updates,
                 token: user.token,
             }),
         {
             onMutate(newItem) {
-                const previousItems = queryCache.getQueryData('list-items')
+                const previousItems = queryClient.getQueryData('list-items')
 
-                queryCache.setQueryData('list-items', old => {
-                    return old.map(item => {
-                        return item.id === newItem.id ? { ...item, ...newItem } : item
+                queryClient.setQueryData('list-items', (old: BooksList) => {
+                    return old!.map((item: BookProps) => {
+                        return item.bookId === newItem.bookId ? { ...item, ...newItem } : item
                     })
                 })
 
-                return () => queryCache.setQueryData('list-items', previousItems)
+                return () => queryClient.setQueryData('list-items', previousItems)
             },
-            ...defaultMutationOptions,
+            onSettled: () => queryClient.invalidateQueries('list-items'),
             ...options,
         },
     )
 }
 
-function useRemoveListItem(user, options) {
+export function useRemoveListItem(user: User, ...options: any) {
+    const queryClient = useQueryClient()
     return useMutation(
-        ({ id }) => client(`list-items/${id}`, { method: 'DELETE', token: user.token }),
+        ({ bookId }: Pick<BookProps, "bookId">) => client(`list-items/${bookId}`, { method: 'DELETE', token: user.token }),
         {
-            onMutate(removedItem) {
-                const previousItems = queryCache.getQueryData('list-items')
+            onMutate(removedItem: BookProps) {
+                const previousItems = queryClient.getQueryData('list-items')
 
-                queryCache.setQueryData('list-items', old => {
-                    return old.filter(item => item.id !== removedItem.id)
+                queryClient.setQueryData('list-items', (old: BooksList) => {
+                    return old!.filter((item: BookProps) => item.bookId !== removedItem.bookId)
                 })
 
-                return () => queryCache.setQueryData('list-items', previousItems)
+                return () => queryClient.setQueryData('list-items', previousItems)
             },
+            onSettled: () => queryClient.invalidateQueries('list-items'),
             ...options,
-            ...defaultMutationOptions,
         },
     )
 }
 
-function useCreateListItem(user, options) {
+export function useCreateListItem(user: User, ...options: any) {
+    const queryClient = useQueryClient()
     return useMutation(
-        ({ bookId }) => client(`list-items`, { data: { bookId }, token: user.token }),
-        { ...defaultMutationOptions, ...options },
+        ({ bookId }: Pick<BookProps, "bookId">) => client(`list-items`, { data: { bookId }, token: user.token }),
+        {
+            onSettled: () => queryClient.invalidateQueries('list-items'),
+            ...options,
+        }
     )
-}
-
-export {
-    useListItem,
-    useListItems,
-    useUpdateListItem,
-    useRemoveListItem,
-    useCreateListItem,
 }

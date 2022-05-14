@@ -1,9 +1,9 @@
-//@ts-nocheck
 import * as React from 'react'
 import {Link} from 'components/lib'
 import {ListItemList} from 'components/list-item-list'
+import {User} from 'types'
 
-function ReadingListScreen({user}) {
+function ReadingListScreen({user}: {user: User}) {
 	return (
 		<ListItemList
 			user={user}

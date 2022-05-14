@@ -8,7 +8,7 @@ import {
 } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import faker from '@faker-js/faker'
-import { server } from 'test/server'
+import {server} from 'test/server'
 
 // enable API mocking in test runs using the same request handlers
 // as for the client-side mocking.
@@ -34,7 +34,7 @@ const waitForLoadingToFinish = () =>
 			...screen.queryAllByLabelText(/loading/i),
 			...screen.queryAllByText(/loading/i),
 		],
-		{ timeout: 4000 },
+		{timeout: 4000},
 	)
 
 test('can login and use the book search', async () => {
@@ -52,17 +52,17 @@ test('can login and use the book search', async () => {
 
 	const user = buildUser()
 
-	await userEvent.click(screen.getByRole('button', { name: /register/i }))
+	await userEvent.click(screen.getByRole('button', {name: /register/i}))
 
 	const modal = within(screen.getByRole('dialog'))
 	await userEvent.type(modal.getByLabelText(/username/i), user.username)
 	await userEvent.type(modal.getByLabelText(/password/i), user.password)
 
-	await userEvent.click(modal.getByRole('button', { name: /register/i }))
+	await userEvent.click(modal.getByRole('button', {name: /register/i}))
 
 	await waitForLoadingToFinish()
 
-	await userEvent.click(screen.getAllByRole('link', { name: /discover/i })[0])
+	await userEvent.click(screen.getAllByRole('link', {name: /discover/i})[0])
 
 	const searchInput = screen.getByPlaceholderText(/search/i)
 	await userEvent.type(searchInput, 'voice of war{enter}')
@@ -79,7 +79,7 @@ test('can login and use the book search', async () => {
 		await screen.findByText(/to the west, a sheltered girl/i),
 	).toBeInTheDocument()
 
-	await userEvent.click(screen.getByRole('button', { name: /logout/i }))
+	await userEvent.click(screen.getByRole('button', {name: /logout/i}))
 
 	expect(searchInput).not.toBeInTheDocument()
 

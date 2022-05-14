@@ -93,7 +93,16 @@ const headers = {
 }
 window.fetch('http://example.com/api', {headers})
 ```
-- Make your types *optional* if you're going to set a default for them ([line 6-10](https://github.com/HelpMe-Pls/bookshelf/blob/1347cc0ff81398c2ee5c775e2252fa7edba081dc/src/utils/api-client.ts) and [line 132](https://github.com/HelpMe-Pls/bookshelf/blob/1347cc0ff81398c2ee5c775e2252fa7edba081dc/src/components/lib.tsx)).
+- Make your types *optional* if you're going to set a default for them ([line 6-10](https://github.com/HelpMe-Pls/bookshelf/blob/1347cc0ff81398c2ee5c775e2252fa7edba081dc/src/utils/api-client.ts) and [line 132](https://github.com/HelpMe-Pls/bookshelf/blob/1347cc0ff81398c2ee5c775e2252fa7edba081dc/src/components/lib.tsx)). Use `Partial` to set the type for `...props` in case you set that argument to be an empty object:
+```ts
+type Props = {
+	key_1: boolean,
+	key_2: Date
+}
+function Sample(param_1: string, { param_2, ...props }: {param_2?: number} & Partial<Props> = {}) { // If you didn't set a default then it's just ` & Props`
+	// Do something...
+}
+```
 - How to merge params ([at 1:30](https://epicreact.dev/modules/build-an-epic-react-app/authentication-extra-credit-solution-01)).
 - It's a good practice to extract `async` logics into an independent function then call it in inside the `useEffect` rather than defining it from within ([line 14-24 and 39](https://github.com/HelpMe-Pls/bookshelf/blob/1347cc0ff81398c2ee5c775e2252fa7edba081dc/src/App.tsx)).
 - For better maintainability, it's highly recommended to use early `return`s instead of one big `return` with multiple ternary statements in it or all of the `return`'s are conditional ([line 62-85](https://github.com/HelpMe-Pls/bookshelf/blob/1347cc0ff81398c2ee5c775e2252fa7edba081dc/src/App.tsx)).
@@ -112,6 +121,22 @@ window.fetch('http://example.com/api', {headers})
 2. Server cache: User data, tweets, contacts, etc.
 We can drastically simplify our UI state management if we split out the server
 cache into something separate.
+- Why use TypeScript:
+```ts
+	const refetchBookSearchQuery = useRefetchBookSearchQuery(user)  // This is a promise
+
+    // The "cleanup" function's return type is `() => void`,
+    // So you can't do:
+	React.useEffect(() => {
+        // TS will catch this error, but JS allows it: 
+		return () => refetchBookSearchQuery()  
+        
+        // So the right way to do this is just call the promise
+        // which acts a cleanup function by itself:
+        refetchBookSearchQuery() 
+	}, [refetchBookSearchQuery])
+```
+- Explicitly type guard the `unknown` params by casting their type with the `as` keyword([at line 17](index.tsx)).
 - Setting a default value to a variable if it's `undefined` ([at 1:00](https://epicreact.dev/modules/build-an-epic-react-app/cache-management-solution-08)).
 - Use nullish coalescing operator `??` with run-time array [traversing methods](status-button).
 - Perform CRUD operations with `react-query`.

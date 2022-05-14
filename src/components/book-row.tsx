@@ -4,12 +4,14 @@ import {jsx} from '@emotion/core'
 import {Link} from 'react-router-dom'
 import * as mq from 'styles/media-queries'
 import * as colors from 'styles/colors'
-import {Book} from 'types'
+import {User, BookData, BookProps} from 'types'
+import {useListItem} from 'utils/list-items'
+import {Rating} from './rating'
 
-function BookRow({book}: Book) {
-	const {title, author, coverImageUrl} = book
-
-	const id = `book-row-book-${book.id}`
+function BookRow({user, book}: {user: User; book: BookData | BookProps}) {
+	const {title, author, coverImageUrl} = book as BookData
+	const listItem = useListItem(user, (book as BookData).id)
+	const id = `book-row-book-${(book as BookData).id}`
 
 	return (
 		<div
@@ -22,7 +24,7 @@ function BookRow({book}: Book) {
 		>
 			<Link
 				aria-labelledby={id}
-				to={`/book/${book.id}`}
+				to={`/book/${(book as BookData).id}`}
 				css={{
 					minHeight: 270,
 					flexGrow: 2,
@@ -69,6 +71,9 @@ function BookRow({book}: Book) {
 							>
 								{title}
 							</h2>
+							{listItem?.finishDate ? (
+								<Rating user={user} listItem={listItem} />
+							) : null}
 						</div>
 						<div css={{marginLeft: 10}}>
 							<div
@@ -80,11 +85,11 @@ function BookRow({book}: Book) {
 							>
 								{author}
 							</div>
-							<small>{book.publisher}</small>
+							<small>{(book as BookData).publisher}</small>
 						</div>
 					</div>
 					<small css={{whiteSpace: 'break-spaces', display: 'block'}}>
-						{book.synopsis.substring(0, 500)}...
+						{(book as BookData).synopsis.substring(0, 500)}...
 					</small>
 				</div>
 			</Link>

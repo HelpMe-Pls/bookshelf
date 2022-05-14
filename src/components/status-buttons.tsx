@@ -1,4 +1,3 @@
-//@ts-nocheck
 /** @jsx jsx */
 import {jsx} from '@emotion/core'
 
@@ -20,9 +19,24 @@ import {
 import * as colors from 'styles/colors'
 import {useAsync} from 'utils/hooks'
 import {CircleButton, Spinner} from './lib'
+import {BookData, BookProps, ErrorResponse, User} from 'types'
 
-function TooltipButton({label, highlight, onClick, icon, ...rest}) {
-	const {isLoading, isError, error, run, reset} = useAsync()
+function TooltipButton({
+	label,
+	highlight,
+	onClick,
+	icon,
+	...rest
+}: {
+	label: string
+	highlight: string
+	onClick: any
+	icon: React.ReactElement
+}) {
+	const {isLoading, isError, error, run, reset} = useAsync<
+		BookData,
+		ErrorResponse
+	>()
 
 	function handleClick() {
 		if (isError) {
@@ -33,7 +47,7 @@ function TooltipButton({label, highlight, onClick, icon, ...rest}) {
 	}
 
 	return (
-		<Tooltip label={isError ? error.message : label}>
+		<Tooltip label={isError ? (error as ErrorResponse).message : label}>
 			<CircleButton
 				css={{
 					backgroundColor: 'white',
@@ -47,7 +61,7 @@ function TooltipButton({label, highlight, onClick, icon, ...rest}) {
 				}}
 				disabled={isLoading}
 				onClick={handleClick}
-				aria-label={isError ? error.message : label}
+				aria-label={isError ? (error as ErrorResponse).message : label}
 				{...rest}
 			>
 				{isLoading ? <Spinner /> : isError ? <FaTimesCircle /> : icon}
@@ -56,12 +70,12 @@ function TooltipButton({label, highlight, onClick, icon, ...rest}) {
 	)
 }
 
-function StatusButtons({user, book}) {
-	const listItem = useListItem(user, book.id)
+function StatusButtons({user, book}: {user: User; book: BookProps}) {
+	const listItem = useListItem(user, book.bookId)
 
-	const [update] = useUpdateListItem(user, {throwOnError: true})
-	const [remove] = useRemoveListItem(user, {throwOnError: true})
-	const [create] = useCreateListItem(user, {throwOnError: true})
+	const {mutateAsync: update} = useUpdateListItem(user)
+	const {mutateAsync: remove} = useRemoveListItem(user)
+	const {mutateAsync: create} = useCreateListItem(user)
 
 	return (
 		<React.Fragment>
@@ -71,7 +85,7 @@ function StatusButtons({user, book}) {
 						label="Unmark as read"
 						highlight={colors.yellow}
 						onClick={() =>
-							update({id: listItem.id, finishDate: null})
+							update({bookId: listItem.bookId, finishDate: null})
 						}
 						icon={<FaBook />}
 					/>
@@ -80,7 +94,10 @@ function StatusButtons({user, book}) {
 						label="Mark as read"
 						highlight={colors.green}
 						onClick={() =>
-							update({id: listItem.id, finishDate: Date.now()})
+							update({
+								bookId: listItem.bookId,
+								finishDate: Date.now(),
+							})
 						}
 						icon={<FaCheckCircle />}
 					/>
@@ -90,14 +107,14 @@ function StatusButtons({user, book}) {
 				<TooltipButton
 					label="Remove from list"
 					highlight={colors.danger}
-					onClick={() => remove({id: listItem.id})}
+					onClick={() => remove({bookId: listItem.bookId})}
 					icon={<FaMinusCircle />}
 				/>
 			) : (
 				<TooltipButton
 					label="Add to list"
 					highlight={colors.indigo}
-					onClick={() => create({bookId: book.id})}
+					onClick={() => create({bookId: book.bookId})}
 					icon={<FaPlusCircle />}
 				/>
 			)}

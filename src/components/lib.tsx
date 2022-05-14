@@ -6,7 +6,6 @@ import {FaSpinner} from 'react-icons/fa'
 import {Dialog as ReachDialog} from '@reach/dialog'
 import * as colors from 'styles/colors'
 import * as mq from 'styles/media-queries'
-import {ErrorResponse} from 'types'
 
 const spin = keyframes({
 	'0%': {transform: 'rotate(0deg)'},
@@ -151,7 +150,7 @@ function ErrorMessage({
 	)
 }
 
-function FullPageErrorFallback({error}: {error: ErrorResponse}) {
+function FullPageErrorFallback({error}: {error: Error}) {
 	return (
 		<div
 			role="alert"
