@@ -115,7 +115,7 @@ function Sample(param_1: string, { param_2, ...props }: {param_2?: number} & Par
 - `useMatch` to [highlight](https://epicreact.dev/modules/build-an-epic-react-app/routing-extra-credit-solution-02) the active nav item.
 - Use template literal to perform `string` interpolation in case of building a forced `string` type expression ([at line 100](https://github.com/HelpMe-Pls/bookshelf/blob/ef1ee6c79ac39d64710e4dfec7bf7b42e05b506a/src/discover.tsx)).  
 
-## [Cache management with `react-query`]()
+## [Cache management with `react-query`](https://github.com/HelpMe-Pls/bookshelf/commit/fb248d107e63d3035473555cd9091955bbeebb16)
 - An app's state can be separated into two types:
 1. UI state: Modal is open, item is highlighted, etc.
 2. Server cache: User data, tweets, contacts, etc.
@@ -136,9 +136,9 @@ cache into something separate.
         refetchBookSearchQuery() 
 	}, [refetchBookSearchQuery])
 ```
-- Explicitly type guard the `unknown` params by casting their type with the `as` keyword([at line 17](index.tsx)).
+- Explicitly type guard the `unknown` params by casting their type with the `as` keyword([at line 17](https://github.com/HelpMe-Pls/bookshelf/blob/fb248d107e63d3035473555cd9091955bbeebb16/src/index.tsx)).
 - Setting a default value to a variable if it's `undefined` ([at 1:00](https://epicreact.dev/modules/build-an-epic-react-app/cache-management-solution-08)).
-- Use nullish coalescing operator `??` with run-time array [traversing methods](status-button).
+- Use nullish coalescing operator `??` with run-time array traversing methods ([at line 25](https://github.com/HelpMe-Pls/bookshelf/blob/fb248d107e63d3035473555cd9091955bbeebb16/src/utils/list-items.ts)).
 - Perform CRUD operations with `react-query`.
 - If your `queryFn` depends on a variable, include it in your `queryKey` array. How to [optimize query keys](https://tkdodo.eu/blog/effective-react-query-keys). 
 - Invalidate query with `onSettled` option from the `useMutation` hook ([at 2:35](https://epicreact.dev/modules/build-an-epic-react-app/cache-management-solution-02)).
