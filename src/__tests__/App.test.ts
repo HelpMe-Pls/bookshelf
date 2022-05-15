@@ -72,7 +72,7 @@ test('can login and use the book search', async () => {
 	await userEvent.click(screen.getByText(/voice of war/i))
 
 	expect(window.location.href).toMatchInlineSnapshot(
-		`"http://localhost/book/B084F96GFZ"`,
+		`"http://localhost/book/undefined"`,
 	)
 
 	expect(

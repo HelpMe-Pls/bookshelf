@@ -6,7 +6,7 @@ import {useUpdateListItem} from 'utils/list-items'
 import {FaStar} from 'react-icons/fa'
 import * as colors from 'styles/colors'
 import {ErrorMessage} from 'components/lib'
-import {BookProps, User} from 'types'
+import {CommonBook, User} from 'types'
 
 const visuallyHiddenCSS: ObjectInterpolation<undefined> = {
 	border: '0',
@@ -19,7 +19,7 @@ const visuallyHiddenCSS: ObjectInterpolation<undefined> = {
 	width: '1px',
 }
 
-function Rating({listItem, user}: {listItem: BookProps; user: User}) {
+function Rating({listItem, user}: {listItem: CommonBook; user: User}) {
 	const [isTabbing, setIsTabbing] = React.useState(false)
 	const {mutate: update, error, isError} = useUpdateListItem(user)
 
@@ -35,7 +35,7 @@ function Rating({listItem, user}: {listItem: BookProps; user: User}) {
 
 	const rootClassName = `list-item-${listItem.bookId}`
 
-	const stars = Array.from({length: 5}).map((x, i) => {
+	const stars = Array.from({length: 5}).map((_x, i) => {
 		const ratingId = `rating-${listItem.bookId}-${i}`
 		const ratingValue = i + 1
 		return (
@@ -47,7 +47,7 @@ function Rating({listItem, user}: {listItem: BookProps; user: User}) {
 					value={ratingValue}
 					checked={ratingValue === listItem.rating}
 					onChange={() => {
-						update({bookId: listItem.bookId, rating: ratingValue})
+						update({bookId: listItem.bookId!, rating: ratingValue})
 					}}
 					css={[
 						visuallyHiddenCSS,

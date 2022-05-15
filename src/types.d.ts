@@ -30,6 +30,7 @@ export type BooksData = {
 // }
 // type BookData = BooksData["books"][number];
 
+
 export type BookProps = {
     bookId: string,
     ownerId?: string
@@ -38,26 +39,27 @@ export type BookProps = {
     startDate?: Date | number
     finishDate?: Date | number | null
 }
-
 export type BooksList = BookProps[] | undefined
 
-export type Book = { book: BookData }
 export type CommonBook = {
-    bookId: string
-    title: string | number
-    author: string
-    coverImageUrl: string
+    bookId?: string
+    id?: string
+    title?: string | number
+    author?: string
+    coverImageUrl?: string
     pageCount?: number
-    publisher: string
-    synopsis: string
+    publisher?: string
+    synopsis?: string
     loadingBook?: boolean
     ownerId?: string
     rating?: number
     notes?: string
     startDate?: Date | number
     finishDate?: Date | number | null
+    book?: BookData
 }
 
+export type BookResponse = { book: BookData }
 export type ErrorResponse = {
     message: string;
     status: number;

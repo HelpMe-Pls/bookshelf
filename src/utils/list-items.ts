@@ -1,17 +1,17 @@
 import { useQuery, useMutation, useQueryClient } from 'react-query'
-import { setQueryDataForBookInList } from './books'
+import { setQueryDataForBook } from './books'
 import { client } from './api-client'
-import { BookProps, BooksList, User } from 'types'
+import { CommonBook, BookProps, User } from 'types'
 
 export function useListItems(user: User) {
     const queryClient = useQueryClient()
-    const { data: listItems } = useQuery<BooksList>({
+    const { data: listItems } = useQuery<CommonBook[]>({
         queryKey: 'list-items',
         queryFn: () =>
             client(`list-items`, { token: user.token }).then(data => data.listItems),
         onSuccess(items) {
-            for (const listItem of items!) {
-                setQueryDataForBookInList(queryClient, listItem)
+            for (const listItem of items) {
+                setQueryDataForBook(queryClient, listItem.book!)
             }
         },
 
@@ -22,15 +22,15 @@ export function useListItems(user: User) {
 
 export function useListItem(user: User, bookId: string) {
     const listItems = useListItems(user)
-    return listItems.find((li: BookProps) => li.bookId === bookId) ?? null
+    return listItems.find((li: CommonBook) => li.bookId === bookId) ?? null
 }
 
 
 export function useUpdateListItem(user: User, ...options: any) {
     const queryClient = useQueryClient()
     return useMutation(
-        (updates: Pick<BookProps, "bookId" | "finishDate" | "rating" | "notes">) =>
-            client(`list-items/${updates.bookId}`, {
+        (updates: Pick<CommonBook, "bookId" | "id" | "finishDate" | "rating" | "notes">) =>
+            client(`list-items/${updates.id}`, {
                 method: 'PUT',
                 data: updates,
                 token: user.token,
@@ -39,9 +39,9 @@ export function useUpdateListItem(user: User, ...options: any) {
             onMutate(newItem) {
                 const previousItems = queryClient.getQueryData('list-items')
 
-                queryClient.setQueryData('list-items', (old: BooksList) => {
-                    return old!.map((item: BookProps) => {
-                        return item.bookId === newItem.bookId ? { ...item, ...newItem } : item
+                queryClient.setQueryData('list-items', (old: CommonBook[] | undefined) => {
+                    return old!.map((item: CommonBook) => {
+                        return item.id === newItem.id ? { ...item, ...newItem } : item
                     })
                 })
 
@@ -56,13 +56,14 @@ export function useUpdateListItem(user: User, ...options: any) {
 export function useRemoveListItem(user: User, ...options: any) {
     const queryClient = useQueryClient()
     return useMutation(
-        ({ bookId }: Pick<BookProps, "bookId">) => client(`list-items/${bookId}`, { method: 'DELETE', token: user.token }),
+        ({ id }: Pick<CommonBook, "id">) => client(`list-items/${id}`,
+            { method: 'DELETE', token: user.token }),
         {
-            onMutate(removedItem: BookProps) {
-                const previousItems = queryClient.getQueryData('list-items')
+            onMutate(removedItem: CommonBook) {
+                const previousItems: CommonBook[] | undefined = queryClient.getQueryData('list-items')
 
-                queryClient.setQueryData('list-items', (old: BooksList) => {
-                    return old!.filter((item: BookProps) => item.bookId !== removedItem.bookId)
+                queryClient.setQueryData('list-items', (old: CommonBook[] | undefined) => {
+                    return old!.filter((item: CommonBook) => item.id !== removedItem.id)
                 })
 
                 return () => queryClient.setQueryData('list-items', previousItems)

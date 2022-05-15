@@ -4,7 +4,7 @@ import {jsx} from '@emotion/core'
 import {useListItems} from 'utils/list-items'
 import {BookListUL} from './lib'
 import {BookRow} from './book-row'
-import {BookProps, User} from 'types'
+import {CommonBook, User} from 'types'
 
 function ListItemList({
 	user,
@@ -13,7 +13,7 @@ function ListItemList({
 	noFilteredListItems,
 }: {
 	user: User
-	filterListItems: (li: BookProps) => boolean
+	filterListItems: (li: CommonBook) => boolean
 	noListItems: React.ReactNode
 	noFilteredListItems: React.ReactNode
 }) {

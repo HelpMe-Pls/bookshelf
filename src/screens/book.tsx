@@ -15,14 +15,15 @@ import * as colors from 'styles/colors'
 import {Spinner, Textarea, ErrorMessage} from 'components/lib'
 import {Rating} from 'components/rating'
 import {StatusButtons} from 'components/status-buttons'
-import {BookData, BookProps, User} from 'types'
+import {CommonBook, User} from 'types'
 
 function BookScreen({user}: {user: User}) {
 	const {bookId} = useParams()
-	const book = useBook(bookId, user)
+	const book = useBook(bookId!, user)
 	const listItem = useListItem(user, bookId!)
 
-	const {title, author, coverImageUrl, publisher, synopsis} = book as BookData
+	const {title, author, coverImageUrl, publisher, synopsis} =
+		book as CommonBook
 
 	return (
 		<div>
@@ -65,7 +66,7 @@ function BookScreen({user}: {user: User}) {
 								minHeight: 100,
 							}}
 						>
-							{(book as BookData).loadingBook ? null : (
+							{book.loadingBook ? null : (
 								<StatusButtons user={user} book={book} />
 							)}
 						</div>
@@ -82,14 +83,14 @@ function BookScreen({user}: {user: User}) {
 					<p>{synopsis}</p>
 				</div>
 			</div>
-			{!(book as BookData).loadingBook && listItem ? (
+			{!book.loadingBook && listItem ? (
 				<NotesTextarea user={user} listItem={listItem} />
 			) : null}
 		</div>
 	)
 }
 
-function ListItemTimeframe({listItem}: {listItem: BookProps}) {
+function ListItemTimeframe({listItem}: {listItem: CommonBook}) {
 	const timeframeLabel = listItem.finishDate
 		? 'Start and finish date'
 		: 'Start date'
@@ -109,7 +110,7 @@ function ListItemTimeframe({listItem}: {listItem: BookProps}) {
 	)
 }
 
-function NotesTextarea({listItem, user}: {listItem: BookProps; user: User}) {
+function NotesTextarea({listItem, user}: {listItem: CommonBook; user: User}) {
 	const {mutate: update, error, isError, isLoading} = useUpdateListItem(user)
 	const debouncedMutate = React.useMemo(
 		() => debounceFn(update, {wait: 300}),
@@ -117,7 +118,7 @@ function NotesTextarea({listItem, user}: {listItem: BookProps; user: User}) {
 	)
 
 	function handleNotesChange(e: React.ChangeEvent<HTMLTextAreaElement>) {
-		debouncedMutate({bookId: listItem.bookId, notes: e.target.value})
+		debouncedMutate({bookId: listItem.bookId!, notes: e.target.value})
 	}
 
 	return (

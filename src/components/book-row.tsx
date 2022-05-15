@@ -4,14 +4,15 @@ import {jsx} from '@emotion/core'
 import {Link} from 'react-router-dom'
 import * as mq from 'styles/media-queries'
 import * as colors from 'styles/colors'
-import {User, BookData, BookProps} from 'types'
+import {User, CommonBook} from 'types'
 import {useListItem} from 'utils/list-items'
 import {Rating} from './rating'
+import {StatusButtons} from './status-buttons'
 
-function BookRow({user, book}: {user: User; book: BookData | BookProps}) {
-	const {title, author, coverImageUrl} = book as BookData
-	const listItem = useListItem(user, (book as BookData).id)
-	const id = `book-row-book-${(book as BookData).id}`
+function BookRow({user, book}: {user: User; book: CommonBook}) {
+	const {title, author, coverImageUrl} = book
+	const listItem = useListItem(user, book.bookId!)
+	const id = `book-row-book-${book.bookId!}`
 
 	return (
 		<div
@@ -24,7 +25,8 @@ function BookRow({user, book}: {user: User; book: BookData | BookProps}) {
 		>
 			<Link
 				aria-labelledby={id}
-				to={`/book/${(book as BookData).id}`}
+				// FIXME: this resolves to `/book/undefined` somehow ???
+				to={`/book/${book.bookId!}`}
 				css={{
 					minHeight: 270,
 					flexGrow: 2,
@@ -85,14 +87,28 @@ function BookRow({user, book}: {user: User; book: BookData | BookProps}) {
 							>
 								{author}
 							</div>
-							<small>{(book as BookData).publisher}</small>
+							<small>{book.publisher}</small>
 						</div>
 					</div>
 					<small css={{whiteSpace: 'break-spaces', display: 'block'}}>
-						{(book as BookData).synopsis.substring(0, 500)}...
+						{book.synopsis!.substring(0, 500)}...
 					</small>
 				</div>
 			</Link>
+			<div
+				css={{
+					marginLeft: '20px',
+					position: 'absolute',
+					right: -20,
+					color: colors.gray80,
+					display: 'flex',
+					flexDirection: 'column',
+					justifyContent: 'space-around',
+					height: '100%',
+				}}
+			>
+				<StatusButtons user={user} book={book} />
+			</div>
 		</div>
 	)
 }

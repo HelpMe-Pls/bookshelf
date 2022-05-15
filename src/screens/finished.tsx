@@ -1,13 +1,13 @@
 import * as React from 'react'
 import {Link} from 'components/lib'
 import {ListItemList} from 'components/list-item-list'
-import {BookProps, User} from 'types'
+import {CommonBook, User} from 'types'
 
 function FinishedScreen({user}: {user: User}) {
 	return (
 		<ListItemList
 			user={user}
-			filterListItems={(li: BookProps) => Boolean(li.finishDate)}
+			filterListItems={(li: CommonBook) => Boolean(li.finishDate)}
 			noListItems={
 				<p>
 					Hey there! This is where books will go when you've finished

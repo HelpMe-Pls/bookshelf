@@ -19,7 +19,7 @@ import {
 import * as colors from 'styles/colors'
 import {useAsync} from 'utils/hooks'
 import {CircleButton, Spinner} from './lib'
-import {BookData, BookProps, ErrorResponse, User} from 'types'
+import {CommonBook, ErrorResponse, User} from 'types'
 
 function TooltipButton({
 	label,
@@ -34,7 +34,7 @@ function TooltipButton({
 	icon: React.ReactElement
 }) {
 	const {isLoading, isError, error, run, reset} = useAsync<
-		BookData,
+		CommonBook,
 		ErrorResponse
 	>()
 
@@ -70,8 +70,8 @@ function TooltipButton({
 	)
 }
 
-function StatusButtons({user, book}: {user: User; book: BookProps | BookData}) {
-	const listItem = useListItem(user, (book as BookProps).bookId)
+function StatusButtons({user, book}: {user: User; book: CommonBook}) {
+	const listItem = useListItem(user, book.id!)
 
 	const {mutateAsync: update} = useUpdateListItem(user)
 	const {mutateAsync: remove} = useRemoveListItem(user)
@@ -85,7 +85,7 @@ function StatusButtons({user, book}: {user: User; book: BookProps | BookData}) {
 						label="Unmark as read"
 						highlight={colors.yellow}
 						onClick={() =>
-							update({bookId: listItem.bookId, finishDate: null})
+							update({id: listItem.id!, finishDate: null})
 						}
 						icon={<FaBook />}
 					/>
@@ -95,7 +95,7 @@ function StatusButtons({user, book}: {user: User; book: BookProps | BookData}) {
 						highlight={colors.green}
 						onClick={() =>
 							update({
-								bookId: listItem.bookId,
+								id: listItem.id!,
 								finishDate: Date.now(),
 							})
 						}
@@ -107,14 +107,14 @@ function StatusButtons({user, book}: {user: User; book: BookProps | BookData}) {
 				<TooltipButton
 					label="Remove from list"
 					highlight={colors.danger}
-					onClick={() => remove({bookId: listItem.bookId})}
+					onClick={() => remove({id: listItem.id})}
 					icon={<FaMinusCircle />}
 				/>
 			) : (
 				<TooltipButton
 					label="Add to list"
 					highlight={colors.indigo}
-					onClick={() => create({bookId: (book as BookProps).bookId})}
+					onClick={() => create({bookId: book.id!})}
 					icon={<FaPlusCircle />}
 				/>
 			)}

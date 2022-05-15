@@ -2,7 +2,7 @@ import React from 'react'
 import { QueryClient, useQuery, useQueryClient } from 'react-query'
 import { client } from './api-client'
 import bookPlaceholderSvg from 'assets/book-placeholder.svg'
-import { Book, BookProps, BookData, BooksData, User } from 'types'
+import { BookResponse, BookProps, BookData, BooksData, CommonBook, User } from 'types'
 
 const loadingBook = {
     id: '',
@@ -28,11 +28,12 @@ const getBookSearchConfig = (queryClient: QueryClient, query: string, user: User
 
     onSuccess(books: BookData[]) {
         for (const book of books) {
-            setQueryDataForBookInSearch(queryClient, book)
+            setQueryDataForBook(queryClient, book)
         }
     },
 })
 
+// TODO: something's wrong with this which leads to `discover` page infinitely loads on first render
 export function useBookSearch(query: string, user: User) {
     const queryClient = useQueryClient()
     const result = useQuery(getBookSearchConfig(queryClient, query, user))
@@ -43,7 +44,7 @@ export function useBook(bookId: Pick<BookProps, "bookId">["bookId"] | undefined,
     const { data } = useQuery({
         queryKey: ['book', { bookId }],
         queryFn: () =>
-            client(`books/${bookId}`, { token: user.token }).then((res: Book) => res.book),
+            client(`books/${bookId}`, { token: user.token }).then((res: BookResponse) => res.book),
     })
     return data ?? loadingBook
 }
@@ -63,10 +64,7 @@ export function useRefetchBookSearchQuery(user: User) {
     )
 }
 
-export function setQueryDataForBookInList(queryClient: QueryClient, book: BookProps) {
-    queryClient.setQueryData(['book', { bookId: book.bookId }], book)
+export function setQueryDataForBook(queryClient: QueryClient, book: CommonBook) {
+    queryClient.setQueryData(['book', { bookId: book.id }], book)
 }
 
-export function setQueryDataForBookInSearch(queryClient: QueryClient, book: BookData) {
-    queryClient.setQueryData(['book', { id: book.id }], book)
-}
