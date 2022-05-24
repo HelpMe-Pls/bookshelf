@@ -1,15 +1,17 @@
 import { useQuery, useMutation, useQueryClient } from 'react-query'
 import { setQueryDataForBook } from './books'
-import { client } from './api-client'
-import { CommonBook, BookProps, User } from 'types'
+import { useClient } from 'context/auth-context'
+import { CommonBook, BookProps } from 'types'
 
-export function useListItems(user: User) {
+export function useListItems(options: any = {}) {
+    const client = useClient()
     const queryClient = useQueryClient()
     const { data: listItems } = useQuery<CommonBook[]>({
         queryKey: 'list-items',
-        queryFn: () =>
-            client(`list-items`, { token: user.token }).then(data => data.listItems),
-        onSuccess(items) {
+        queryFn: () => client('list-items').then(data => data.listItems),
+        ...options,
+        onSuccess: async items => {
+            await options.onSuccess?.(items)
             for (const listItem of items) {
                 setQueryDataForBook(queryClient, listItem.book!)
             }
@@ -20,20 +22,20 @@ export function useListItems(user: User) {
 }
 
 
-export function useListItem(user: User, bookId: string) {
-    const listItems = useListItems(user)
+export function useListItem(bookId: string, options?: unknown) {
+    const listItems = useListItems(options)
     return listItems.find((li: CommonBook) => li.bookId === bookId) ?? null
 }
 
 
-export function useUpdateListItem(user: User, ...options: any) {
+export function useUpdateListItem(options?: any) {
+    const client = useClient()
     const queryClient = useQueryClient()
     return useMutation(
         (updates: Pick<CommonBook, "bookId" | "id" | "finishDate" | "rating" | "notes">) =>
             client(`list-items/${updates.id}`, {
                 method: 'PUT',
                 data: updates,
-                token: user.token,
             }),
         {
             onMutate(newItem) {
@@ -53,11 +55,12 @@ export function useUpdateListItem(user: User, ...options: any) {
     )
 }
 
-export function useRemoveListItem(user: User, ...options: any) {
+export function useRemoveListItem(options?: any) {
+    const client = useClient()
     const queryClient = useQueryClient()
     return useMutation(
         ({ id }: Pick<CommonBook, "id">) => client(`list-items/${id}`,
-            { method: 'DELETE', token: user.token }),
+            { method: 'DELETE' }),
         {
             onMutate(removedItem: CommonBook) {
                 const previousItems: CommonBook[] | undefined = queryClient.getQueryData('list-items')
@@ -74,10 +77,14 @@ export function useRemoveListItem(user: User, ...options: any) {
     )
 }
 
-export function useCreateListItem(user: User, ...options: any) {
+export function useCreateListItem(options?: any) {
+    const client = useClient()
     const queryClient = useQueryClient()
+
     return useMutation(
-        ({ bookId }: Pick<BookProps, "bookId">) => client(`list-items`, { data: { bookId }, token: user.token }),
+        ({ bookId }: Pick<BookProps, "bookId">) => client(`list-items`, {
+            data: { bookId }
+        }),
         {
             onSettled: () => queryClient.invalidateQueries('list-items'),
             ...options,

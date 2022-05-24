@@ -17,12 +17,14 @@ function handleUserResponse({ user }: { user: User }) {
     return user
 }
 
-function login({ username, password }: UserInput) {
-    return client('login', { username, password }).then(handleUserResponse)
+async function login({ username, password }: UserInput) {
+    const result = await client('login', { username, password });
+    return handleUserResponse(result);
 }
 
-function register({ username, password }: UserInput) {
-    return client('register', { username, password }).then(handleUserResponse)
+async function register({ username, password }: UserInput) {
+    const res = await client('register', { username, password });
+    return handleUserResponse(res);
 }
 
 async function logout() {

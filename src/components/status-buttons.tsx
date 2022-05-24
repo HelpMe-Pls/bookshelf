@@ -19,7 +19,7 @@ import {
 import * as colors from 'styles/colors'
 import {useAsync} from 'utils/hooks'
 import {CircleButton, Spinner} from './lib'
-import {CommonBook, ErrorResponse, User} from 'types'
+import {CommonBook, ErrorResponse} from 'types'
 
 function TooltipButton({
 	label,
@@ -70,12 +70,12 @@ function TooltipButton({
 	)
 }
 
-function StatusButtons({user, book}: {user: User; book: CommonBook}) {
-	const listItem = useListItem(user, book.id!)
+export function StatusButtons({book}: {book: CommonBook}) {
+	const listItem = useListItem(book.id!)
 
-	const {mutateAsync: update} = useUpdateListItem(user)
-	const {mutateAsync: remove} = useRemoveListItem(user)
-	const {mutateAsync: create} = useCreateListItem(user)
+	const {mutateAsync: update} = useUpdateListItem()
+	const {mutateAsync: remove} = useRemoveListItem()
+	const {mutateAsync: create} = useCreateListItem()
 
 	return (
 		<React.Fragment>
@@ -121,5 +121,3 @@ function StatusButtons({user, book}: {user: User; book: CommonBook}) {
 		</React.Fragment>
 	)
 }
-
-export {StatusButtons}

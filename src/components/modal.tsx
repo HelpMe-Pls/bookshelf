@@ -8,40 +8,48 @@ import {Dialog, CircleButton} from './lib'
 function callAll<Args extends Array<unknown>>(
 	...fns: Array<((...args: Args) => unknown) | undefined>
 ) {
-	return (...args: Args) => fns.forEach(fn => fn?.(...args))
+	return (...args: Args) => fns.forEach(fn => fn && fn(...args))
 }
 
 type ModalValue = [boolean, (arg: boolean) => void]
 const ModalContext = React.createContext<ModalValue | undefined>(undefined)
 
-function Modal(props?: any) {
+export function Modal(props?: any) {
 	const [isOpen, setIsOpen] = React.useState(false)
 
 	return <ModalContext.Provider value={[isOpen, setIsOpen]} {...props} />
 }
 
-function ModalDismissButton({children: child}: {children: React.ReactElement}) {
+export function ModalDismissButton({
+	children: child,
+}: {
+	children: React.ReactElement
+}) {
 	const [, setIsOpen] = React.useContext(ModalContext)!
 	return React.cloneElement(child, {
 		onClick: callAll(() => setIsOpen(false), child.props.onClick),
 	})
 }
 
-function ModalOpenButton({children: child}: {children: React.ReactElement}) {
+export function ModalOpenButton({
+	children: child,
+}: {
+	children: React.ReactElement
+}) {
 	const [, setIsOpen] = React.useContext(ModalContext)!
 	return React.cloneElement(child, {
 		onClick: callAll(() => setIsOpen(true), child.props.onClick),
 	})
 }
 
-function ModalContentsBase(props?: any) {
+export function ModalContentsBase(props?: any) {
 	const [isOpen, setIsOpen] = React.useContext(ModalContext)!
 	return (
 		<Dialog isOpen={isOpen} onDismiss={() => setIsOpen(false)} {...props} />
 	)
 }
 
-function ModalContents({
+export function ModalContents({
 	title,
 	children,
 	...props
@@ -65,5 +73,3 @@ function ModalContents({
 		</ModalContentsBase>
 	)
 }
-
-export {Modal, ModalDismissButton, ModalOpenButton, ModalContents}

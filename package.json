@@ -113,7 +113,6 @@
     ]
   },
   "description": "A project to summarize what I've learnt about React and TypeScript.",
-  "main": "go.js",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/HelpMe-Pls/bookshelf.git"

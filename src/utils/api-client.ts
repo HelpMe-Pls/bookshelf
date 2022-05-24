@@ -1,8 +1,9 @@
 import * as auth from 'auth-provider'
 import { ClientConfigs } from '../types'
+
 const apiURL = process.env.REACT_APP_API_URL
 
-async function client(
+export async function client(
     endpoint: string,
     { data, token, headers: customHeaders, ...customConfigs }: {
         data?: unknown;
@@ -37,4 +38,4 @@ async function client(
     }
 }
 
-export { client }
+

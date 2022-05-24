@@ -3,7 +3,7 @@ import {jsx} from '@emotion/core'
 
 import {Link} from 'components/lib'
 
-function NotFoundScreen() {
+export function NotFoundScreen() {
 	return (
 		<div
 			css={{
@@ -20,5 +20,3 @@ function NotFoundScreen() {
 		</div>
 	)
 }
-
-export {NotFoundScreen}

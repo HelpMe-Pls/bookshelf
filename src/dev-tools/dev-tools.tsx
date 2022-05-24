@@ -7,15 +7,33 @@ import '@reach/tabs/styles.css'
 import '@reach/tooltip/styles.css'
 
 import * as React from 'react'
-import {createRoot} from 'react-dom/client'
+import ReactDOM from 'react-dom'
 import {FaTools} from 'react-icons/fa'
 import {Tooltip} from '@reach/tooltip'
 import {Tabs, TabList, TabPanels, TabPanel, Tab} from '@reach/tabs'
 import * as reactQuery from 'react-query'
 // pulling the development thing directly because I'm not worried about
 // bundle size since this won't be loaded in prod unless the query string/localStorage key is set
-import {ReactQueryDevtoolsPanel} from 'react-query-devtools/dist/react-query-devtools.development'
+import {ReactQueryDevtoolsPanel} from 'react-query/es/devtools'
 import * as colors from 'styles/colors'
+
+// this is a bit of hackery, because we want to keep our devtools and app
+// pretty seperate, but we need to have a way to know when the query client is
+// set so we can provide it to ReactQueryDevtoolsPanel
+let latestQueryClient = null
+let rerender = () => {}
+window.__devtools = {
+	setQueryClient(client) {
+		latestQueryClient = client
+		// in a set timeout to avoid:
+		// https://reactjs.org/link/setstate-in-render
+		setTimeout(rerender)
+	},
+}
+function useLatestQueryClient() {
+	rerender = React.useReducer(() => ({}))[1]
+	return latestQueryClient
+}
 
 function install() {
 	// add some things to window to make it easier to debug
@@ -33,6 +51,7 @@ function install() {
 
 	function DevTools() {
 		const rootRef = React.useRef()
+		const queryClient = useLatestQueryClient()
 		const [hovering, setHovering] = React.useState(false)
 		const [persist, setPersist] = useLocalStorageState(
 			'__bookshelf_devtools_persist__',
@@ -188,7 +207,15 @@ function install() {
 									<RequestFailUI />
 								</TabPanel>
 								<TabPanel>
-									<ReactQueryDevtoolsPanel />
+									{queryClient ? (
+										<reactQuery.QueryClientProvider
+											client={queryClient}
+										>
+											<ReactQueryDevtoolsPanel />
+										</reactQuery.QueryClientProvider>
+									) : (
+										'No query client has been initialized'
+									)}
 								</TabPanel>
 							</TabPanels>
 						</Tabs>
@@ -209,7 +236,7 @@ function install() {
 	// add dev tools UI to the page
 	const devToolsRoot = document.createElement('div')
 	document.body.appendChild(devToolsRoot)
-	createRoot(devToolsRoot).render(<DevTools />)
+	ReactDOM.render(<DevTools />, devToolsRoot)
 }
 
 function ControlsPanel() {

@@ -6,7 +6,7 @@ import {useUpdateListItem} from 'utils/list-items'
 import {FaStar} from 'react-icons/fa'
 import * as colors from 'styles/colors'
 import {ErrorMessage} from 'components/lib'
-import {CommonBook, User} from 'types'
+import {CommonBook} from 'types'
 
 const visuallyHiddenCSS: ObjectInterpolation<undefined> = {
 	border: '0',
@@ -19,9 +19,9 @@ const visuallyHiddenCSS: ObjectInterpolation<undefined> = {
 	width: '1px',
 }
 
-function Rating({listItem, user}: {listItem: CommonBook; user: User}) {
+export function Rating({listItem}: {listItem: CommonBook}) {
 	const [isTabbing, setIsTabbing] = React.useState(false)
-	const {mutate: update, error, isError} = useUpdateListItem(user)
+	const {mutate: update, error, isError} = useUpdateListItem()
 
 	React.useEffect(() => {
 		function handleKeyDown(event: KeyboardEvent) {
@@ -33,10 +33,10 @@ function Rating({listItem, user}: {listItem: CommonBook; user: User}) {
 		return () => document.removeEventListener('keydown', handleKeyDown)
 	}, [])
 
-	const rootClassName = `list-item-${listItem.bookId}`
+	const rootClassName = `list-item-${listItem.id}`
 
 	const stars = Array.from({length: 5}).map((_x, i) => {
-		const ratingId = `rating-${listItem.bookId}-${i}`
+		const ratingId = `rating-${listItem.id}-${i}`
 		const ratingValue = i + 1
 		return (
 			<React.Fragment key={i}>
@@ -47,7 +47,7 @@ function Rating({listItem, user}: {listItem: CommonBook; user: User}) {
 					value={ratingValue}
 					checked={ratingValue === listItem.rating}
 					onChange={() => {
-						update({bookId: listItem.bookId!, rating: ratingValue})
+						update({id: listItem.id, rating: ratingValue})
 					}}
 					css={[
 						visuallyHiddenCSS,
@@ -118,5 +118,3 @@ function Rating({listItem, user}: {listItem: CommonBook; user: User}) {
 		</div>
 	)
 }
-
-export {Rating}

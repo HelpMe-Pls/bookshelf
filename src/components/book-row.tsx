@@ -4,15 +4,15 @@ import {jsx} from '@emotion/core'
 import {Link} from 'react-router-dom'
 import * as mq from 'styles/media-queries'
 import * as colors from 'styles/colors'
-import {User, CommonBook} from 'types'
+import {CommonBook} from 'types'
 import {useListItem} from 'utils/list-items'
 import {Rating} from './rating'
 import {StatusButtons} from './status-buttons'
 
-function BookRow({user, book}: {user: User; book: CommonBook}) {
+function BookRow({book}: {book: CommonBook}) {
 	const {title, author, coverImageUrl} = book
-	const listItem = useListItem(user, book.bookId!)
-	const id = `book-row-book-${book.bookId!}`
+	const listItem = useListItem(book.id!)
+	const id = `book-row-book-${book.id!}`
 
 	return (
 		<div
@@ -26,7 +26,7 @@ function BookRow({user, book}: {user: User; book: CommonBook}) {
 			<Link
 				aria-labelledby={id}
 				// FIXME: this resolves to `/book/undefined` somehow ???
-				to={`/book/${book.bookId!}`}
+				to={`/book/${book.id!}`}
 				css={{
 					minHeight: 270,
 					flexGrow: 2,
@@ -74,7 +74,7 @@ function BookRow({user, book}: {user: User; book: CommonBook}) {
 								{title}
 							</h2>
 							{listItem?.finishDate ? (
-								<Rating user={user} listItem={listItem} />
+								<Rating listItem={listItem} />
 							) : null}
 						</div>
 						<div css={{marginLeft: 10}}>
@@ -107,7 +107,7 @@ function BookRow({user, book}: {user: User; book: CommonBook}) {
 					height: '100%',
 				}}
 			>
-				<StatusButtons user={user} book={book} />
+				<StatusButtons book={book} />
 			</div>
 		</div>
 	)

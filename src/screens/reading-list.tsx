@@ -1,12 +1,10 @@
 import * as React from 'react'
 import {Link} from 'components/lib'
 import {ListItemList} from 'components/list-item-list'
-import {User} from 'types'
 
-function ReadingListScreen({user}: {user: User}) {
+export function ReadingListScreen() {
 	return (
 		<ListItemList
-			user={user}
 			filterListItems={li => !li.finishDate}
 			noListItems={
 				<p>
@@ -26,5 +24,3 @@ function ReadingListScreen({user}: {user: User}) {
 		/>
 	)
 }
-
-export {ReadingListScreen}

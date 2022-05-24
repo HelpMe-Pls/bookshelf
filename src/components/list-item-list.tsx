@@ -4,20 +4,19 @@ import {jsx} from '@emotion/core'
 import {useListItems} from 'utils/list-items'
 import {BookListUL} from './lib'
 import {BookRow} from './book-row'
-import {CommonBook, User} from 'types'
+import {Profiler} from './profiler'
+import {CommonBook} from 'types'
 
-function ListItemList({
-	user,
+export function ListItemList({
 	filterListItems,
 	noListItems,
 	noFilteredListItems,
 }: {
-	user: User
 	filterListItems: (li: CommonBook) => boolean
 	noListItems: React.ReactNode
 	noFilteredListItems: React.ReactNode
 }) {
-	const listItems = useListItems(user)
+	const listItems = useListItems()
 
 	const filteredListItems = listItems.filter(filterListItems)
 
@@ -35,14 +34,20 @@ function ListItemList({
 	}
 
 	return (
-		<BookListUL>
-			{filteredListItems.map(listItem => (
-				<li key={listItem.bookId}>
-					<BookRow user={user} book={listItem} />
-				</li>
-			))}
-		</BookListUL>
+		<Profiler
+			id="List Item List"
+			metadata={{listItemCount: filteredListItems.length}}
+		>
+			<BookListUL>
+				{filteredListItems.map(listItem => (
+					<li
+						key={listItem.id}
+						aria-label={String(listItem.book!.title)}
+					>
+						<BookRow book={listItem.book!} />
+					</li>
+				))}
+			</BookListUL>
+		</Profiler>
 	)
 }
-
-export {ListItemList}

@@ -1,12 +1,11 @@
 import * as React from 'react'
 import {Link} from 'components/lib'
 import {ListItemList} from 'components/list-item-list'
-import {CommonBook, User} from 'types'
+import {CommonBook} from 'types'
 
-function FinishedScreen({user}: {user: User}) {
+export function FinishedScreen() {
 	return (
 		<ListItemList
-			user={user}
 			filterListItems={(li: CommonBook) => Boolean(li.finishDate)}
 			noListItems={
 				<p>
@@ -26,5 +25,3 @@ function FinishedScreen({user}: {user: User}) {
 		/>
 	)
 }
-
-export {FinishedScreen}

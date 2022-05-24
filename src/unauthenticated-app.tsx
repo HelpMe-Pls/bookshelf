@@ -5,8 +5,9 @@ import * as React from 'react'
 import {Input, Button, Spinner, FormGroup, ErrorMessage} from './components/lib'
 import {Modal, ModalContents, ModalOpenButton} from './components/modal'
 import {Logo} from './components/logo'
+import {useAuth} from './context/auth-context'
 import {useAsync} from './utils/hooks'
-import {UserInput} from 'types'
+import {User, UserInput} from 'types'
 
 interface FormData extends HTMLFormControlsCollection {
 	username: HTMLInputElement | string
@@ -18,10 +19,7 @@ interface FormElement extends HTMLFormElement {
 }
 
 interface LoginProps {
-	onSubmit: ({
-		username,
-		password,
-	}: Pick<FormData, 'username' | 'password'>) => Promise<unknown>
+	onSubmit: ({username, password}: UserInput) => Promise<User>
 	submitButton: React.ReactElement
 }
 
@@ -78,13 +76,8 @@ function LoginForm({onSubmit, submitButton}: LoginProps) {
 	)
 }
 
-function UnauthenticatedApp({
-	login,
-	register,
-}: {
-	login: (form: UserInput) => Promise<unknown>
-	register: (form: UserInput) => Promise<unknown>
-}) {
+export default function UnauthenticatedApp() {
+	const {login, register} = useAuth()
 	return (
 		<div
 			css={{
@@ -138,5 +131,3 @@ function UnauthenticatedApp({
 		</div>
 	)
 }
-
-export {UnauthenticatedApp}

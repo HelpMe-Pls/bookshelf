@@ -126,7 +126,6 @@ cache into something separate.
 	const refetchBookSearchQuery = useRefetchBookSearchQuery(user)  // This is a promise
 
     // The "cleanup" function's return type is `() => void`,
-    // So you can't do:
 	React.useEffect(() => {
         // TS will catch this error, but JS allows it: 
 		return () => refetchBookSearchQuery()  
