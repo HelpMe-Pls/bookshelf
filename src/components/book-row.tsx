@@ -25,7 +25,6 @@ function BookRow({book}: {book: CommonBook}) {
 		>
 			<Link
 				aria-labelledby={id}
-				// FIXME: this resolves to `/book/undefined` somehow ???
 				to={`/book/${book.id!}`}
 				css={{
 					minHeight: 270,

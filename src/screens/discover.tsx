@@ -24,7 +24,8 @@ export function DiscoverBooksScreen() {
 	const refetchBookSearchQuery = useRefetchBookSearchQuery()
 
 	React.useEffect(() => {
-		refetchBookSearchQuery()
+		//FIXME: Something's wrong with this which results in infinte loading
+		return () => refetchBookSearchQuery()
 	}, [refetchBookSearchQuery])
 
 	function handleSearchSubmit(event: React.FormEvent<FormElement>) {
