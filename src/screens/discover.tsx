@@ -23,9 +23,22 @@ export function DiscoverBooksScreen() {
 	const {books, error, isLoading, isError, isSuccess} = useBookSearch(query)
 	const refetchBookSearchQuery = useRefetchBookSearchQuery()
 
+	/* This "clean up" effect serves its purpose to reload a new list of books
+	 * for the "Discovery" page (in the background)
+	 * right AFTER the server has updated the "Reading List"
+	 * (i.e. the user added/removed some books to/from the "Reading List")
+	 * Without this effect, the next time the user visit the "Discovery" page,
+	 * they will see a jump in the book list due to the effect of updating
+	 * the list only when they visit the "Discover" page.
+	 */
 	React.useEffect(() => {
-		//FIXME: Something's wrong with this which results in infinte loading
-		return () => refetchBookSearchQuery()
+		// The ReturnType of useEffect() clean up function is `void`
+		// and the call `refetchBookSearchQuery()` returns a promise
+		// that's why we wrap it with an IIFE to please TS :))
+		return () =>
+			(function cleanUp() {
+				refetchBookSearchQuery()
+			})()
 	}, [refetchBookSearchQuery])
 
 	function handleSearchSubmit(event: React.FormEvent<FormElement>) {

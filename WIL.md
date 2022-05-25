@@ -125,14 +125,16 @@ cache into something separate.
 ```ts
 	const refetchBookSearchQuery = useRefetchBookSearchQuery(user)  // This is a promise
 
-    // The "cleanup" function's return type is `() => void`,
+    // The "cleanup" function's return type is `void`,
 	React.useEffect(() => {
         // TS will catch this error, but JS allows it: 
 		return () => refetchBookSearchQuery()  
         
-        // So the right way to do this is just call the promise
-        // which acts a cleanup function by itself:
-        refetchBookSearchQuery() 
+        // So the right way to do this is to wrap the promise with an IIFE:
+        return () =>
+			(function cleanUp() {
+				refetchBookSearchQuery()
+			})()
 	}, [refetchBookSearchQuery])
 ```
 - Explicitly type guard the `unknown` params by casting their type with the `as` keyword([at line 17](https://github.com/HelpMe-Pls/bookshelf/blob/fb248d107e63d3035473555cd9091955bbeebb16/src/index.tsx)).

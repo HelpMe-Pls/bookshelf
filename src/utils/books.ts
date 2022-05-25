@@ -39,7 +39,6 @@ const getBookSearchConfig = (queryClient: QueryClient, client: (endpoint: any, c
     },
 })
 
-// TODO: something's wrong with this which leads to `discover` page infinitely loads on first render
 export function useBookSearch(query: string) {
     const client = useClient()
     const queryClient = useQueryClient()
