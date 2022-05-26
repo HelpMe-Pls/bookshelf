@@ -151,10 +151,10 @@ cache into something separate.
 - Perform optimistic updates (i.e. assuming the request is going to succeed and make
 the UI appear as if it had) with `useMutation`'s `onMutate` option ([at 1:20](https://epicreact.dev/modules/build-an-epic-react-app/cache-management-extra-credit-solution-07)). You can rollback optimistic updates in case of a mutation failure by using the `onError` and `onSettled` options ([at 3:20](https://epicreact.dev/modules/build-an-epic-react-app/cache-management-extra-credit-solution-07)).
 
-## [Context]()
+## [Context](https://github.com/HelpMe-Pls/bookshelf/commit/6a64f83803a569aa3b3e4aa566d00dd6d46eaf6f)
 - The common cases for `Context` (to eliminate prop-drilling) are application "toast" notifications, user authentication state, or modal and focus management. 
-- [When](https://epicreact.dev/modules/build-an-epic-react-app/context-solution-04) to convert a function into a hook (also a notice on how hooks are used). A tip for when you have a function which needs to access the context's value ([at 02:18](https://epicreact.dev/modules/build-an-epic-react-app/context-solution-04)).
+- [When](https://epicreact.dev/modules/build-an-epic-react-app/context-solution-04) to convert a function into a custom hook (also a notice on how hooks are used). A tip for when you have a function which needs to access the context's value ([at 02:18](https://epicreact.dev/modules/build-an-epic-react-app/context-solution-04)).
 - The most practical use case of `useCallback` ([at 1:20](https://epicreact.dev/modules/build-an-epic-react-app/context-solution-04)): when your function will be likely added to a dependency list.
-- Improve maintainability by SoC: create a component as a wrapper, whose sole purpose is to manage and provide the context. A standard `context` file should [look like this](https://github.com/HelpMe-Pls/bookshelf-forked/blob/exercises/07-context/src/context/auth-context.extra-2.js). 
-- It is recommmended to move all the contexts into a global context module (`index` file in the `context` folder) for easier testing.
+- Improve maintainability by SoC: create a component as a wrapper, whose sole purpose is to *manage and provide* the context. A standard `context` file should [look like this](https://github.com/HelpMe-Pls/bookshelf-forked/blob/exercises/07-context/src/context/auth-context.extra-2.js). 
+- It is recommmended to move all the contexts into a [global context module](https://github.com/HelpMe-Pls/bookshelf/blob/6a64f83803a569aa3b3e4aa566d00dd6d46eaf6f/src/context/index.tsx) (`index` file in the `context` folder) for easier testing.
 - Nested destructuring ([at 0:25](https://epicreact.dev/modules/build-an-epic-react-app/context-extra-credit-solution-04), it's just another way of writing `useAuth().user.token`).
