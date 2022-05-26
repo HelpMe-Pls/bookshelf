@@ -165,7 +165,7 @@ the UI appear as if it had) with `useMutation`'s `onMutate` option ([at 1:20](ht
 - Create a generic utility function ([at 01:50](https://epicreact.dev/modules/build-an-epic-react-app/compound-components-extra-credit-solution-01)) which calls many functions at once.
 - Create a HOC (to embrace immutability) from a base component ([at 01:45](https://epicreact.dev/modules/build-an-epic-react-app/compound-components-extra-credit-solution-02)) to further customize an existing component.
 
-## [Performance]()
+## [Performance](https://github.com/HelpMe-Pls/bookshelf/commit/c08eab858173b0b0201ad3ff1af7190513d1cbad)
 - Performance optimizations are not free. They ALWAYS come with a cost but do NOT always come with a benefit to offset that cost. Therefore, optimize responsibly and make sure to measure your refactor to see if it's worth it.
 - Consider a [suitable approach](https://github.com/HelpMe-Pls/react-performance/blob/master/src/examples/where-to-put-state.webp) for your state management.
 - **Code splitting**: no matter how big your application grows, it's unlikely the user needs _everything_ your application can do on the page at the same time. So if instead we split the application code and assets into logical "chunks" (using `React.lazy`) then we could load only the chunks necessary for what the user wants to do right then. 
