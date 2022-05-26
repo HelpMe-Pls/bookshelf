@@ -158,3 +158,9 @@ the UI appear as if it had) with `useMutation`'s `onMutate` option ([at 1:20](ht
 - Improve maintainability by SoC: create a component as a wrapper, whose sole purpose is to *manage and provide* the context. A standard `context` file should [look like this](https://github.com/HelpMe-Pls/bookshelf-forked/blob/exercises/07-context/src/context/auth-context.extra-2.js). 
 - It is recommmended to move all the contexts into a [global context module](https://github.com/HelpMe-Pls/bookshelf/blob/6a64f83803a569aa3b3e4aa566d00dd6d46eaf6f/src/context/index.tsx) (`index` file in the `context` folder) for easier testing.
 - Nested destructuring ([at 0:25](https://epicreact.dev/modules/build-an-epic-react-app/context-extra-credit-solution-04), it's just another way of writing `useAuth().user.token`).
+
+## [Compound components]()
+- Not all reusable components are _actually_ reusable. Lots of the time what it turns into is a mess of props. Those end upbeing enormously difficult to use and maintain. They're also riddled with performance problems and actual bugs.
+- A recommended approach is to refactor your code by [creating compound components](https://epicreact.dev/modules/build-an-epic-react-app/compound-components-solution) which are structurally flexible (i.e. we don't want to control the structure of the components), but we still want to have implicitly shared state between them. Utilizing `context` ([at 07:45](https://epicreact.dev/modules/build-an-epic-react-app/compound-components-solution)) will help us with that. 
+- Create a generic utility function ([at 01:50](https://epicreact.dev/modules/build-an-epic-react-app/compound-components-extra-credit-solution-01)) which calls many functions at once.
+- Create a HOC (to embrace immutability) from a base component ([at 01:45](https://epicreact.dev/modules/build-an-epic-react-app/compound-components-extra-credit-solution-02)) to further customize an existing component.
