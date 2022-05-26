@@ -164,3 +164,19 @@ the UI appear as if it had) with `useMutation`'s `onMutate` option ([at 1:20](ht
 - A recommended approach is to refactor your code by [creating compound components](https://epicreact.dev/modules/build-an-epic-react-app/compound-components-solution) which are structurally flexible (i.e. we don't want to control the structure of the components), but we still want to have implicitly shared state between them. Utilizing `context` ([at 07:45](https://epicreact.dev/modules/build-an-epic-react-app/compound-components-solution)) will help us with that. 
 - Create a generic utility function ([at 01:50](https://epicreact.dev/modules/build-an-epic-react-app/compound-components-extra-credit-solution-01)) which calls many functions at once.
 - Create a HOC (to embrace immutability) from a base component ([at 01:45](https://epicreact.dev/modules/build-an-epic-react-app/compound-components-extra-credit-solution-02)) to further customize an existing component.
+
+## [Performance]()
+- Performance optimizations are not free. They ALWAYS come with a cost but do NOT always come with a benefit to offset that cost. Therefore, optimize responsibly and make sure to measure your refactor to see if it's worth it.
+- Consider a [suitable approach](https://github.com/HelpMe-Pls/react-performance/blob/master/src/examples/where-to-put-state.webp) for your state management.
+- **Code splitting**: no matter how big your application grows, it's unlikely the user needs _everything_ your application can do on the page at the same time. So if instead we split the application code and assets into logical "chunks" (using `React.lazy`) then we could load only the chunks necessary for what the user wants to do right then. 
+- Remember, `React.lazy` expects the module you're importing to export a React component as the `default export`.
+- Use the Devtool's `coverage` to measure if your optimization is worth it ([at 4:50](https://epicreact.dev/modules/build-an-epic-react-app/performance-solution)).
+- If you're using Webpack: prefetch a lazily loaded module with `/* webpackPrefetch: true */` ([at 02:40](https://epicreact.dev/modules/build-an-epic-react-app/performance-extra-credit-solution-01)):
+```ts
+const AuthenticatedApp = React.lazy(() =>
+  import(/* webpackPrefetch: true */ './authenticated-app'),
+)
+```
+- The only time the context's provider re-renders is when the [state actually changes](https://kentcdodds.com/blog/optimize-react-re-renders) (which is when you _want_ consumers to re-render anyway). However, it's often a good idea to [memoize the functions](https://epicreact.dev/modules/build-an-epic-react-app/performance-extra-credit-solution-02) we expose through context so those functions can be passed into dependency arrays. From there, we'll memoize the context value as well.
+- Measure and report your app's performance [with `React.Profiler`](https://reactjs.org/docs/profiler.html). How to customize the `Profiler` ([at 2:00](https://epicreact.dev/modules/build-an-epic-react-app/performance-extra-credit-solution-03-01)) and how to use it ([at 1:10](https://epicreact.dev/modules/build-an-epic-react-app/performance-extra-credit-solution-03-02)). 
+- A remind ([at 2:35](https://epicreact.dev/modules/build-an-epic-react-app/performance-extra-credit-solution-03-03)) on where to put your `Profiler`. Add the `Profiler` to your production build ([at 1:10](https://epicreact.dev/modules/build-an-epic-react-app/performance-extra-credit-solution-03-04)).
