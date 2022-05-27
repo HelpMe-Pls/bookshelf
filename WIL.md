@@ -181,7 +181,7 @@ const AuthenticatedApp = React.lazy(() =>
 - Measure and report your app's performance [with `React.Profiler`](https://reactjs.org/docs/profiler.html). How to customize the `Profiler` ([at 2:00](https://epicreact.dev/modules/build-an-epic-react-app/performance-extra-credit-solution-03-01)) and how to use it ([at 1:10](https://epicreact.dev/modules/build-an-epic-react-app/performance-extra-credit-solution-03-02)). 
 - A remind ([at 2:35](https://epicreact.dev/modules/build-an-epic-react-app/performance-extra-credit-solution-03-03)) on where to put your `Profiler`. Add the `Profiler` to your production build ([at 1:10](https://epicreact.dev/modules/build-an-epic-react-app/performance-extra-credit-solution-03-04)).
   
-## [Render as you fetch]()
+## [Render as you fetch](https://github.com/HelpMe-Pls/bookshelf/commit/307c9618e9fea424ef6f0c0e343dd05672d324b4)
 - There are three common approaches to data fetching:
 1. Fetch-**on**-render: We start rendering components and each of these components may trigger data fetching *in their effects and lifecycle methods*. A good example of that is fetching inside the `useEffect()`.
 2. Fetch-**then**-render: Start fetching all the data for the next screen first, **then** when the data is ready, render the new screen. *We can’t render some of our components anything until the data arrives*. The example of that is having a "Container" (or a "parent") component that handles data fetching and *conditionally renders* the child presentational component *once we’ve received the data*. In short, it's not really an improvement from "fetch-on-render" but rather a different way to do it.
