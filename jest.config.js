@@ -10,16 +10,29 @@ require('react-scripts/config/env')
 
 module.exports = {
 	roots: ['<rootDir>/src'],
-	preset: 'ts-jest',
-	testMatch: ['**/__tests__/**/*.ts'],
+	testMatch: [
+		'**/__tests__/**/*.[jt]s?(x)',
+		'**/?(*.)+(spec|test).[jt]s?(x)',
+	],
 	testEnvironment: resolve.sync('jest-environment-jsdom', {
 		basedir: require.resolve('jest'),
 	}),
 
+	// this testPathIgnorePatterns config just makes things work with the way we
+	// have to do things for this workshop to work. You shouldn't need this in
+	// your own jest config. NOTE: This is the *entire* reason we need a custom
+	// jest config. Otherwise we'd be able to use regular react-scripts
+	// so in your apps, react-scripts should work just fine.
+	testPathIgnorePatterns: [
+		'/node_modules/',
+		'exercise\\.js$',
+		'final\\.js$',
+		'extra-\\d+\\.js$',
+	],
 	setupFiles: [require.resolve('whatwg-fetch')],
-	// some of the exercise branches don't have setupTests.js
-	setupFilesAfterEnv: fs.existsSync('src/setupTests.js')
-		? ['<rootDir>/src/setupTests.js']
+	// some of the exercise branches don't have setupTests.ts
+	setupFilesAfterEnv: fs.existsSync('src/setupTests.ts')
+		? ['<rootDir>/src/setupTests.ts']
 		: [],
 	moduleDirectories: ['node_modules', path.join(__dirname, './src')],
 	transform: {

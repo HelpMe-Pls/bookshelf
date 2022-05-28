@@ -7,7 +7,7 @@ import {
 	userEvent,
 	loginAsUser,
 } from 'test/app-test-utils'
-import faker from 'faker'
+import faker from '@faker-js/faker'
 import {server, rest} from 'test/server'
 import {buildBook, buildListItem} from 'test/generate'
 import * as booksDB from 'test/data/books'
@@ -16,10 +16,6 @@ import {formatDate} from 'utils/misc'
 import {App} from 'App'
 
 const apiURL = process.env.REACT_APP_API_URL
-
-const fakeTimerUserEvent = userEvent.setup({
-	advanceTimers: () => jest.runOnlyPendingTimers(),
-})
 
 async function renderBookScreen({user, book, listItem} = {}) {
 	if (user === undefined) {
@@ -78,7 +74,7 @@ test('can create a list item for the book', async () => {
 	await renderBookScreen({listItem: null})
 
 	const addToListButton = screen.getByRole('button', {name: /add to list/i})
-	await userEvent.click(addToListButton)
+	userEvent.click(addToListButton)
 	expect(addToListButton).toBeDisabled()
 
 	await waitForLoadingToFinish()
@@ -109,7 +105,7 @@ test('can remove a list item for the book', async () => {
 	const removeFromListButton = screen.getByRole('button', {
 		name: /remove from list/i,
 	})
-	await userEvent.click(removeFromListButton)
+	userEvent.click(removeFromListButton)
 	expect(removeFromListButton).toBeDisabled()
 
 	await waitForLoadingToFinish()
@@ -143,7 +139,7 @@ test('can mark a list item as read', async () => {
 	await renderBookScreen({user, book, listItem})
 
 	const markAsReadButton = screen.getByRole('button', {name: /mark as read/i})
-	await userEvent.click(markAsReadButton)
+	userEvent.click(markAsReadButton)
 	expect(markAsReadButton).toBeDisabled()
 
 	await waitForLoadingToFinish()
@@ -172,8 +168,8 @@ test('can edit a note', async () => {
 	const newNotes = faker.lorem.words()
 	const notesTextarea = screen.getByRole('textbox', {name: /notes/i})
 
-	await fakeTimerUserEvent.clear(notesTextarea)
-	await fakeTimerUserEvent.type(notesTextarea, newNotes)
+	userEvent.clear(notesTextarea)
+	userEvent.type(notesTextarea, newNotes)
 
 	// wait for the loading spinner to show up
 	await screen.findByLabelText(/loading/i)
@@ -207,8 +203,8 @@ describe('console errors', () => {
 	})
 
 	test('note update failures are displayed', async () => {
-		jest.useFakeTimers()
 		// using fake timers to skip debounce time
+		jest.useFakeTimers()
 		await renderBookScreen()
 
 		const newNotes = faker.lorem.words()
@@ -218,7 +214,7 @@ describe('console errors', () => {
 		server.use(
 			rest.put(
 				`${apiURL}/list-items/:listItemId`,
-				async (req, res, ctx) => {
+				async (_req, res, ctx) => {
 					return res(
 						ctx.status(400),
 						ctx.json({status: 400, message: testErrorMessage}),
@@ -227,7 +223,7 @@ describe('console errors', () => {
 			),
 		)
 
-		await fakeTimerUserEvent.type(notesTextarea, newNotes)
+		userEvent.type(notesTextarea, newNotes)
 		// wait for the loading spinner to show up
 		await screen.findByLabelText(/loading/i)
 		// wait for the loading spinner to go away
