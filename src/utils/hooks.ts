@@ -40,13 +40,7 @@ function useSafeDispatch<T>(dispatch: React.Dispatch<T>) {
         }
     }, [])
     return React.useCallback<(args: T) => void>(
-        args => {
-            if (!mounted.current) {
-                return
-            }
-
-            dispatch(args)
-        },
+        (...args) => (mounted.current ? dispatch(...args) : void 0),
         [dispatch],
     )
 }
@@ -69,6 +63,18 @@ export function useAsync<T, E>(initialState?: IUseAsyncParams<T, E>) {
 
     const safeSetState = useSafeDispatch(setState)
 
+    const setData = React.useCallback<(data: T) => void>(
+        data => safeSetState({ data, status: 'resolved' }),
+        [safeSetState],
+    )
+    const setError = React.useCallback<(error: E | null) => void>(
+        error => safeSetState({ error, status: 'rejected' }),
+        [safeSetState],
+    )
+    const reset = React.useCallback(
+        () => safeSetState(initialStateRef.current),
+        [safeSetState],
+    )
     const run = React.useCallback<IUseAsyncRunFn<T>>(
         promise => {
             if (!promise || !promise.then) {
@@ -79,30 +85,18 @@ export function useAsync<T, E>(initialState?: IUseAsyncParams<T, E>) {
             safeSetState({ status: 'pending' })
             return promise.then(
                 data => {
-                    safeSetState({ data, status: 'resolved' })
+                    setData(data)
                     return data
                 },
                 error => {
-                    safeSetState({ status: 'rejected', error })
-                    return error
+                    setError(error)
+                    return Promise.reject(error)
                 },
             )
         },
-        [safeSetState],
+        [safeSetState, setData, setError],
     )
 
-    const setData = React.useCallback<(data: T) => void>(
-        data => safeSetState({ data }),
-        [safeSetState],
-    )
-    const setError = React.useCallback<(error: E | null) => void>(
-        error => safeSetState({ error }),
-        [safeSetState],
-    )
-    const reset = React.useCallback(
-        () => safeSetState(initialStateRef.current),
-        [safeSetState],
-    )
 
     return {
         // using the same names that react-query uses for convenience
