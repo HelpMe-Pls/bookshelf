@@ -82,7 +82,7 @@ export function StatusButtons({book}: {book: CommonBook}) {
 			{listItem ? (
 				Boolean(listItem.finishDate) ? (
 					<TooltipButton
-						label="Unmark as read"
+						label="Mark as unread"
 						highlight={colors.yellow}
 						onClick={() =>
 							update({id: listItem.id!, finishDate: null})
