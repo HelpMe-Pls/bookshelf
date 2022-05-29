@@ -1,6 +1,6 @@
-const isCI = require('is-ci')
+import isCI from 'is-ci';
 
-module.exports = (on, config) => {
+module.exports = (_on: any, config: { watchForFileChanges: any; baseUrl: string }) => {
   const isDev = config.watchForFileChanges
   if (!isCI) {
     config.baseUrl = isDev ? 'http://localhost:3000' : 'http://localhost:8811'

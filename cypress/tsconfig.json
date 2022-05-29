@@ -9,6 +9,8 @@
   },
   "include": [
     "../node_modules/cypress",
-    "./**/*.js"
+    "./**/*.js",
+    "plugins/index.ts",
+    "e2e/smoke.ts"
   ]
 }
