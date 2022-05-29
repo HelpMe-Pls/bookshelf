@@ -275,7 +275,7 @@ test('should increment counter', () => {
 - When to use the `describe` block in your test ([at 1:00](https://epicreact.dev/modules/build-an-epic-react-app/integration-testing-extra-credit-solution-07-02)).
 - Test the *expected* error response **from the server** ([at 3:20](https://epicreact.dev/modules/build-an-epic-react-app/integration-testing-extra-credit-solution-07-03)).
 
-## [E2E Testing]()
+## [E2E Testing](https://github.com/HelpMe-Pls/bookshelf/commit/c692249d7b2719a76c4cea037c6e55a0214f8a23)
 - There's no better way to make automated tests resemble the way the user will use your software than to program an _actual browser_ to interact with your application the same way a user would (without access to any internals, without
 mocking the backend,...). This is called an "End-to-End" test (or E2E).
 - For unit tests, we're often testing a single function. For integration tests, we're normally testing a single screen. For E2E tests, we're putting it all together and testing the application *as a whole*. This means that typically the
