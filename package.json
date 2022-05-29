@@ -4,12 +4,13 @@
   "private": true,
   "author": "Khoi Le <khoile5399@gmail.com> (https://github.com/HelpMe-Pls)",
   "license": "GPL-3.0-only",
-  "homepage": "https://exercises-06-cache-management.bookshelf.lol/",
+  "homepage": "https://bookshelf.lol/",
   "engines": {
     "node": "12 || 14 || 15 || 16",
     "npm": ">=6"
   },
   "dependencies": {
+    "@babel/preset-react": "^7.17.12",
     "@emotion/core": "^10.0.35",
     "@emotion/styled": "^10.0.27",
     "@reach/dialog": "^0.17.0",

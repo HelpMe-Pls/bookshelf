@@ -1,1 +1,4 @@
-module.exports = {presets: ['@babel/preset-env'], sourceType: 'unambiguous'}
+module.exports = {
+	presets: ['@babel/preset-env', '@babel/preset-react'],
+	sourceType: 'unambiguous',
+}
