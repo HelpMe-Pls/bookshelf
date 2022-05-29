@@ -204,7 +204,7 @@ const AuthenticatedApp = React.lazy(() =>
 - Mock function call for testing with `jext.mock` and `.toHaveBeenCalledTimes()` method ([at 1:40](https://epicreact.dev/modules/build-an-epic-react-app/unit-testing-extra-credit-solution-01-01)).
 - [Automatically](https://epicreact.dev/modules/build-an-epic-react-app/unit-testing-extra-credit-solution-02) setup your server for testing if you're using `create-react-app`.
 
-## [Testing hooks and components]()
+## [Testing hooks and components](https://github.com/HelpMe-Pls/bookshelf/commit/9713b2cc62f573adb7dcb1a359079e7853b7f7d4)
 - Use case of the `Symbol` primitive ([at 2:10](https://epicreact.dev/modules/build-an-epic-react-app/testing-hooks-and-components-solution-04)). 
 - [When](https://kentcdodds.com/blog/aha-testing) to refactor/abstract your tests.
 - Typically, you'll get confidence that your components are working when you run
