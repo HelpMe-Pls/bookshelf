@@ -15,7 +15,7 @@ function useConstant(initializer: Function) {
 	return React.useState(initializer)[0]
 }
 
-function QueryClientProvider({children}: any) {
+export function QueryClientProvider({children}: any) {
 	const queryClient = useConstant(() => {
 		const client = new QueryClient({
 			defaultOptions: {
@@ -44,5 +44,3 @@ function QueryClientProvider({children}: any) {
 	//@ts-expect-error
 	return <RQProvider client={queryClient}>{children}</RQProvider>
 }
-
-export {QueryClientProvider}

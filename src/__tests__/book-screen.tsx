@@ -16,7 +16,6 @@ import {formatDate} from 'utils/misc'
 import {App} from 'App'
 
 const apiURL = process.env.REACT_APP_API_URL
-
 const fakeTimerUserEvent = userEvent.setup({
 	advanceTimers: () => jest.runOnlyPendingTimers(),
 })
@@ -207,8 +206,8 @@ describe('console errors', () => {
 	})
 
 	test('note update failures are displayed', async () => {
-		jest.useFakeTimers()
 		// using fake timers to skip debounce time
+		jest.useFakeTimers()
 		await renderBookScreen()
 
 		const newNotes = faker.lorem.words()
@@ -218,7 +217,7 @@ describe('console errors', () => {
 		server.use(
 			rest.put(
 				`${apiURL}/list-items/:listItemId`,
-				async (_req, res, ctx) => {
+				async (req, res, ctx) => {
 					return res(
 						ctx.status(400),
 						ctx.json({status: 400, message: testErrorMessage}),
@@ -228,6 +227,7 @@ describe('console errors', () => {
 		)
 
 		await fakeTimerUserEvent.type(notesTextarea, newNotes)
+
 		// wait for the loading spinner to show up
 		await screen.findByLabelText(/loading/i)
 		// wait for the loading spinner to go away

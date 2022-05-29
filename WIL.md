@@ -191,10 +191,72 @@ const AuthenticatedApp = React.lazy(() =>
    3. Start loading those things [as soon as](https://epicreact.dev/modules/build-an-epic-react-app/render-as-you-fetch-extra-credit-solution-01) you possibly can (i.e fetching data *while* your component is rendering, therefore reduce the "loading" time).
    
 ## [Unit Testing](https://github.com/HelpMe-Pls/bookshelf/commit/d8be663a2e749b695c294fa10c520ab6d2ad61c5)
-- When writing code, remember that you only have two users that you need to support: End users, and developer users
+- The "customers" of the test are developers, so you want to make it as easy for them to understand as possible so they can work out what's happening when a test fails.
+- Various types of tests:
+1. **Static**: catch typos and type errors as you write the code.
+2. **Unit**: verify that individual, isolated parts works as expected (we're often testing a single function).
+3. **Integration**: verify that several units works together in harmony (we're normally testing a single screen).
+4. **End to End** (AKA "e2e test" or "functional testing"): a helper that behaves like an user to click around the app and verify that things function the way you want (we're putting it all together and testing the application as a whole). 
 - Any piece of code that's heavily relied upon is a good candidate for unit testing. Keep in mind that [not everything](https://kentcdodds.com/blog/how-to-know-what-to-test) needs a unit test. Think less about the code you are testing and more about the use cases that code supports.
 - Test a pure function ([at 1:00](https://epicreact.dev/modules/build-an-epic-react-app/unit-testing-solution-01)). Use `msw` to mock network request ([at 1:00](https://epicreact.dev/modules/build-an-epic-react-app/unit-testing-solution-02)).
 - How to know if you're testing the right thing ([at 1:10](https://epicreact.dev/modules/build-an-epic-react-app/unit-testing-solution-05) and [2:35](https://epicreact.dev/modules/build-an-epic-react-app/unit-testing-extra-credit-solution-01-01)). 
 - Handle a promise's error ([line 89, 91 and 96 -> 108](https://github.com/HelpMe-Pls/bookshelf/blob/d8be663a2e749b695c294fa10c520ab6d2ad61c5/src/utils/__tests__/api-client.ts)). 
 - Mock function call for testing with `jext.mock` and `.toHaveBeenCalledTimes()` method ([at 1:40](https://epicreact.dev/modules/build-an-epic-react-app/unit-testing-extra-credit-solution-01-01)).
 - [Automatically](https://epicreact.dev/modules/build-an-epic-react-app/unit-testing-extra-credit-solution-02) setup your server for testing if you're using `create-react-app`.
+
+## [Testing hooks and components]()
+- Use case of the `Symbol` primitive ([at 2:10](https://epicreact.dev/modules/build-an-epic-react-app/testing-hooks-and-components-solution-04)). 
+- [When](https://kentcdodds.com/blog/aha-testing) to refactor/abstract your tests.
+- Typically, you'll get confidence that your components are working when you run
+them *as part of* integration tests with other components. However, highly
+reusable or complex components/hooks can really benefit from a solid suite of
+unit tests dedicated to them specifically. Sometimes this means that you'd mock some or
+all of their dependencies and other times they don't have any dependencies at
+all.
+- One thing to keep in mind, we want to try and use our code *in the same way* we
+expect users to use them. So when testing the *compound components*, we should render them all together, rather than trying to render them separately from one
+another.
+- For testing components, we'll be using [`@testing-library/react`](https://testing-library.com/react), the de-facto standard testing library for React, [`@testing-library/user-event`](https://github.com/testing-library/user-event) and [`@testing-library/jest-dom`](https://github.com/testing-library/jest-dom) to help with our user interactions. A contrived example of how to test a component with React Testing Library:
+
+```typescript
+import * as React from 'react'
+import {render, screen} from '@testing-library/react'
+import userEvent from '@testing-library/user-event'
+import {MyComponent} from '../my-component'
+
+test('renders click me button', () => {
+  render(<MyComponent />)
+  const button = screen.getByRole('button', {name: /click me/i})
+  // `userEvent` returns promises for every API calls,
+  // so you'll need to add `await` for any interaction you do.
+  await userEvent.click(button)
+
+  expect().toBeInTheDocument()
+})
+```
+- Use `screen.debug` ([at 1:10](https://epicreact.dev/modules/build-an-epic-react-app/testing-hooks-and-components-solution-01)) to help with your test writing.
+- A tip for `screen.getByRole` ([at 1:40](https://epicreact.dev/modules/build-an-epic-react-app/testing-hooks-and-components-solution-01)) to scope your queries down to a specific element.
+- The easiest and most straightforward way to test a custom hook is to create a component that uses it and then test that component instead. To do that, we'll **make a test component** that uses the hook in the typical way that our hook will be used and then test that component, therefore _indirectly_ testing our hook.
+- When it's difficult to create a test component that resembles the **typical** way that our hook will be used, we can _isolate_ the hook by creating a `null` component that **only** uses what the hook returns. Remember to wrap an `act()` around your state update ([at 1:30](https://epicreact.dev/modules/testing-react-apps/testing-custom-hooks-extra-credit-solution-1)). 
+- Use `renderHook` from `@testing-library/react-hooks` ([at 1:00](https://epicreact.dev/modules/build-an-epic-react-app/testing-hooks-and-components-solution-02)) to create tests for custom hooks. Here's a quick example of how you'd test a custom hook with `@testing-library/react`:
+
+```javascript
+import {renderHook, act} from '@testing-library/react'
+import useCounter from '../use-counter'
+
+test('should increment counter', () => {
+  const {result} = renderHook(() => useCounter())
+  expect(result.current.count).toBe(0)
+
+  // All state updates/side effects should be wrapped in `act` to ensure that
+  // you're testing the behavior the user would see in the browser. 
+  act(() => {
+    result.current.increment()
+  })
+  expect(result.current.count).toBe(1)
+})
+```
+- Remeber to wrap your state updates/side effects in an `act` ([at 2:00](https://epicreact.dev/modules/build-an-epic-react-app/testing-hooks-and-components-solution-03)) to ensure that you're [testing the behavior](https://epicreact.dev/modules/build-an-epic-react-app/testing-hooks-and-components-solution-04) the user would see in the browser.
+- Use `expect.any(Function)` ([at 1:45](https://epicreact.dev/modules/build-an-epic-react-app/testing-hooks-and-components-solution-02)) if you don't care what a function returns in your test.
+- Remember to `catch` a rejected promise ([at 0:50](https://epicreact.dev/modules/build-an-epic-react-app/testing-hooks-and-components-solution-06)).
+- Use `jest.SpyOn()` and then `expect(console.error).not.toHaveBeenCalled()` ([at 0:40](https://epicreact.dev/modules/build-an-epic-react-app/testing-hooks-and-components-solution-09)) to make your test fail (**as expected**) instead of passing and gives a `console.error` warning. Use `console.error.mockRestore()` to preserve the test's isolation ([at 2:20](https://epicreact.dev/modules/build-an-epic-react-app/testing-hooks-and-components-solution-09)). Another workaround is to [scope them](https://epicreact.dev/modules/build-an-epic-react-app/integration-testing-extra-credit-solution-07-02) for that specific *expect error* test.

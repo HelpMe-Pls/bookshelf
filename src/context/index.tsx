@@ -3,7 +3,7 @@ import {BrowserRouter as Router} from 'react-router-dom'
 import {QueryClientProvider} from './query-client'
 import {AuthProvider} from './auth-context'
 
-function AppProviders({children}: any) {
+export function AppProviders({children}: any) {
 	return (
 		<QueryClientProvider>
 			<Router>
@@ -12,5 +12,3 @@ function AppProviders({children}: any) {
 		</QueryClientProvider>
 	)
 }
-
-export {AppProviders}
