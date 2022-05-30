@@ -41,23 +41,25 @@ export type BookProps = {
 }
 export type BooksList = BookProps[] | undefined
 
-export type CommonBook = {
-    bookId?: string
-    id?: string
-    title?: string | number
-    author?: string
-    coverImageUrl?: string
-    pageCount?: number
-    publisher?: string
-    synopsis?: string
-    loadingBook?: boolean
-    ownerId?: string
-    rating?: number
-    notes?: string
-    startDate?: Date | number
-    finishDate?: Date | number | null
-    book?: BookData
-}
+
+export type CommonBook = Partial<BookProps & BookData & BookResponse>
+//     {
+//     bookId?: string
+//     id?: string
+//     title?: string | number
+//     author?: string
+//     coverImageUrl?: string
+//     pageCount?: number
+//     publisher?: string
+//     synopsis?: string
+//     loadingBook?: boolean
+//     ownerId?: string
+//     rating?: number
+//     notes?: string
+//     startDate?: Date | number
+//     finishDate?: Date | number | null
+//     book?: BookData
+// }
 
 export type BookResponse = { book: BookData }
 export type ErrorResponse = {
