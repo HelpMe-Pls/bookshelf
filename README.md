@@ -65,7 +65,7 @@ Your app is ready to be deployed!
 See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
 
 
-## Documentation
+# Documentation
 To *quickly* learn React, check out the [React documentation](https://beta.reactjs.org/learn).
 For a paid course, I highly recommend the Kent C. Dodds [Epic React course](https://epicreact.dev).
 My personal preference [learning path](https://www.reactiflux.com/learning) to become a React Frontend developer.
