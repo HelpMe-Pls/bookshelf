@@ -2,7 +2,7 @@
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app). It is my attempt to convert [this project](https://github.com/kentcdodds/bookshelf) into TypeScript and serves as a component for my résumé.
 
 ## Usage
-Visit the [live demo](bukshelf.netlify.app), register an account and let curiosity be your guide.
+Visit the [live demo](https://bukshelf.netlify.app), register an account and let curiosity be your guide.
 
 ## Caveats
 For the main purpose of demonstrating React's modern best practices, the project uses [Mock Service Worker](https://mswjs.io) and Local Storage to emulate the backend's behavior, therefore, it won't match your expectations of a proper fullstack app.
