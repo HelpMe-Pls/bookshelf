@@ -68,7 +68,7 @@ See the section about [deployment](https://facebook.github.io/create-react-app/d
 # Documentation
 To *quickly* learn React, check out the [React documentation](https://beta.reactjs.org/learn).\
 For a paid course, I highly recommend the Kent C. Dodds [Epic React course](https://epicreact.dev).\
-My personal preference [learning path](https://www.reactiflux.com/learning) to become a React Frontend developer.
+My personal preference of a [learning path](https://www.reactiflux.com/learning) to become a React Frontend developer.
 
 Check out [the notes](https://github.com/HelpMe-Pls/bookshelf/blob/master/WIL.md) that I had throughout the process of building this project.
 
