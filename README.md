@@ -70,7 +70,15 @@ To *quickly* learn React, check out the [React documentation](https://beta.react
 For a paid course, I highly recommend the Kent C. Dodds [Epic React course](https://epicreact.dev).\
 My personal preference of a [learning path](https://www.reactiflux.com/learning) to become a React Frontend developer.
 
-Check out [the notes](https://github.com/HelpMe-Pls/bookshelf/blob/master/WIL.md) that I had throughout the process of building this project.
+Check out [the notes](https://github.com/HelpMe-Pls/bookshelf/blob/master/WIL.md) that I had throughout the process of building this project.\
+My collection of React specific topics:
+- [The fundamentals](https://github.com/HelpMe-Pls/react-fundamentals/blob/master/README.md).
+- [Hooks](https://github.com/HelpMe-Pls/react-hooks/blob/master/README.md).
+- [Advanced hooks](https://github.com/HelpMe-Pls/advanced-react-hooks/blob/master/README.md).
+- [Design Patterns](https://github.com/HelpMe-Pls/advanced-react-patterns/blob/master/README.md).
+- [Performance](https://github.com/HelpMe-Pls/react-performance/blob/master/README.md).
+- [Concurrency](https://github.com/HelpMe-Pls/react-suspense/blob/master/README.md).
+- [Testing](https://github.com/HelpMe-Pls/testing-react-apps/blob/master/README.md). 
 
 # Contributing
 Pull requests are most welcome. For breaking changes suggestion, please open an issue first to discuss what you would like to change/improve.
