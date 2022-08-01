@@ -137,7 +137,7 @@ cache into something separate.
 			})()
 	}, [refetchBookSearchQuery])
 ```
-- Explicitly type guard the `unknown` params by casting their type with the `as` keyword([at line 17](https://github.com/HelpMe-Pls/bookshelf/blob/fb248d107e63d3035473555cd9091955bbeebb16/src/index.tsx)).
+- Explicitly type guard the `unknown` params by casting their type with the `as` keyword ([at line 17](https://github.com/HelpMe-Pls/bookshelf/blob/fb248d107e63d3035473555cd9091955bbeebb16/src/index.tsx)).
 - Setting a default value to a variable if it's `undefined` ([at 1:00](https://epicreact.dev/modules/build-an-epic-react-app/cache-management-solution-08)).
 - Use nullish coalescing operator `??` with run-time array traversing methods ([at line 25](https://github.com/HelpMe-Pls/bookshelf/blob/fb248d107e63d3035473555cd9091955bbeebb16/src/utils/list-items.ts)).
 - Perform CRUD operations with `react-query`.
