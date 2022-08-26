@@ -124,17 +124,17 @@ cache into something separate.
 - Why use TypeScript:
 ```ts
 const refetchBookSearchQuery = useRefetchBookSearchQuery(user)  // This is a promise
-	// The "cleanup" function's return type is `void`:
-	React.useEffect(() => {
-       		 // TS will catch this error, but JS allows it: 
-		return () => refetchBookSearchQuery()  
+
+// The "cleanup" function's return type is `void`:
+React.useEffect(() => {
+     // TS will catch this error, but JS allows it: 
+     return () => refetchBookSearchQuery()  
         
-        	// So the right way to do this is to wrap the promise with an IIFE:
-        	return () =>
-			(function cleanUp() {
-				refetchBookSearchQuery()
-			})()
-	}, [refetchBookSearchQuery])
+     // So the right way to do this is to wrap the promise with an IIFE:
+     return () => (function cleanUp() {
+		   refetchBookSearchQuery()
+     })()
+}, [refetchBookSearchQuery])
 ```
 - Explicitly type guard the `unknown` params by casting their type with the `as` keyword ([at line 17](https://github.com/HelpMe-Pls/bookshelf/blob/fb248d107e63d3035473555cd9091955bbeebb16/src/index.tsx)).
 - Setting a default value to a variable if it's `undefined` ([at 1:00](https://epicreact.dev/modules/build-an-epic-react-app/cache-management-solution-08)).
