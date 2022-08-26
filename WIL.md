@@ -123,15 +123,14 @@ We can drastically simplify our UI state management if we split out the server
 cache into something separate.
 - Why use TypeScript:
 ```ts
-	const refetchBookSearchQuery = useRefetchBookSearchQuery(user)  // This is a promise
-
-    // The "cleanup" function's return type is `void`,
+const refetchBookSearchQuery = useRefetchBookSearchQuery(user)  // This is a promise
+	// The "cleanup" function's return type is `void`:
 	React.useEffect(() => {
-        // TS will catch this error, but JS allows it: 
+       		 // TS will catch this error, but JS allows it: 
 		return () => refetchBookSearchQuery()  
         
-        // So the right way to do this is to wrap the promise with an IIFE:
-        return () =>
+        	// So the right way to do this is to wrap the promise with an IIFE:
+        	return () =>
 			(function cleanUp() {
 				refetchBookSearchQuery()
 			})()
