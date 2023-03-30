@@ -41,19 +41,20 @@ See the section about [running tests](https://facebook.github.io/create-react-ap
 
 ### `npm run cy:open`
 Run this command on a **separate** terminal instance **after** having your development mode running (with `npm start`) to launch the Cypress E2E test runner. It tests the user's "happy path" as follows:
-1. Arrive at the app and register.
-2. Go to the discover page and search for a book.
-3. Add that book to the reading list.
-4. Go to the reading list and then go to the book page.
-5. Add some notes.
-6. Mark the book as read.
-7. Give the book a 5 star rating.
-8. Go to the finished books screen.
-9. Verify the book shows up and has a 5 star rating.
-10. Click the book to go back to it's page.
-11. Remove it from the reading list.
-12. Make sure the notes and rating are gone.
-13. Go to the finished books screen and make sure that list is empty.
+
+1. Arrive at the app and register
+2. Go to the discover page and search for a book
+3. Add that book to the reading list
+4. Go to the reading list and then go to the book page
+5. Add some notes
+6. Mark the book as read
+7. Give the book a 5 star rating
+8. Go to the finished books screen
+9. Verify the book shows up and has a 5 star rating
+10. Click the book to go back to it's page
+11. Remove it from the reading list
+12. Make sure the notes and rating are gone
+13. Go to the finished books screen and make sure that list is empty
 
 ### `npm run build`
 Builds the app for production to the `build` folder.\
@@ -72,13 +73,14 @@ My personal preference of a [learning path](https://www.reactiflux.com/learning)
 
 Check out [the notes](https://github.com/HelpMe-Pls/bookshelf/blob/master/WIL.md) that I had throughout the process of building this project.\
 My collection of React specific topics:
-- [The fundamentals](https://github.com/HelpMe-Pls/react-fundamentals/blob/master/README.md).
-- [Hooks](https://github.com/HelpMe-Pls/react-hooks/blob/master/README.md).
-- [Advanced hooks](https://github.com/HelpMe-Pls/advanced-react-hooks/blob/master/README.md).
-- [Design Patterns](https://github.com/HelpMe-Pls/advanced-react-patterns/blob/master/README.md).
-- [Performance](https://github.com/HelpMe-Pls/react-performance/blob/master/README.md).
-- [Concurrency](https://github.com/HelpMe-Pls/react-suspense/blob/master/README.md).
-- [Testing](https://github.com/HelpMe-Pls/testing-react-apps/blob/master/README.md). 
+
+- [The fundamentals](https://github.com/HelpMe-Pls/react-fundamentals/blob/master/README.md)
+- [Hooks](https://github.com/HelpMe-Pls/react-hooks/blob/master/README.md)
+- [Advanced hooks](https://github.com/HelpMe-Pls/advanced-react-hooks/blob/master/README.md)
+- [Design Patterns](https://github.com/HelpMe-Pls/advanced-react-patterns/blob/master/README.md)
+- [Performance](https://github.com/HelpMe-Pls/react-performance/blob/master/README.md)
+- [Concurrency](https://github.com/HelpMe-Pls/react-suspense/blob/master/README.md)
+- [Testing](https://github.com/HelpMe-Pls/testing-react-apps/blob/master/README.md)
 
 # Contributing
 Pull requests are most welcome. For breaking changes suggestion, please open an issue first to discuss what you would like to change/improve.
